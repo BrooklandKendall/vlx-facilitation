@@ -2,6 +2,8 @@
 
 React + Vite facilitation workspace backed by Firebase Firestore.
 
+Running at: `https://vivalynx-tasks.web.app`
+
 ## What the app does
 
 - Runs a shared realtime workshop board with five tabs: Agenda, North star, Feature sort, Risks/questions, and Session output.

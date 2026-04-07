@@ -128,20 +128,19 @@ export function FeatureBoard({ features, filterDomain, onFilterDomain, onUpdateF
                   </div>
                   <div className="feat-bucket">
                     <label className="feat-field">
-                      <span>Bucket</span>
-                      <select
-                        className="feat-select"
-                        value={feature.bucket}
-                        onChange={(event) =>
-                          void onUpdateFeature(feature.id, { bucket: event.target.value as Feature["bucket"] })
-                        }
-                      >
+                      <div className="bucket-toggle" role="group" aria-label={`Set bucket for ${feature.name}`}>
                         {BUCKET_OPTIONS.map((bucket) => (
-                          <option key={bucket.value} value={bucket.value}>
+                          <button
+                            key={bucket.value}
+                            type="button"
+                            className={`bucket-btn bucket-${bucket.value} ${feature.bucket === bucket.value ? "active" : ""}`}
+                            aria-pressed={feature.bucket === bucket.value}
+                            onClick={() => void onUpdateFeature(feature.id, { bucket: bucket.value })}
+                          >
                             {bucket.label}
-                          </option>
+                          </button>
                         ))}
-                      </select>
+                      </div>
                     </label>
                   </div>
                 </div>
