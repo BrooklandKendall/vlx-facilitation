@@ -260,6 +260,10 @@ select {
   width: auto;
 }
 
+.ctrl-row .input {
+  width: min(300px, 100%);
+}
+
 .ctrl-row label {
   font-size: 13px;
   color: #6b7280;
@@ -341,6 +345,23 @@ select {
   font-size: 13px;
   font-weight: 600;
   margin-bottom: 8px;
+  color: #111827;
+}
+
+.feat-card-top {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.feat-name-input {
+  width: 100%;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 7px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
   color: #111827;
 }
 
@@ -508,12 +529,16 @@ select {
   margin-bottom: 8px;
   display: flex;
   justify-content: space-between;
-  align-items: start;
+  align-items: center;
   gap: 8px;
 }
 
 .risk-text {
   font-size: 13px;
+}
+
+.risk-item .input {
+  flex: 1;
 }
 
 .risk-item .del {

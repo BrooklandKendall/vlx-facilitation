@@ -62,6 +62,17 @@ const DEFAULT_SESSION = {
   successCriteria: "",
 };
 
+const ITEM_SEED = [
+  { type: "nonNegotiable", text: "HIPAA-compliant handling of workshop and pilot data." },
+  { type: "nonNegotiable", text: "Simple onboarding for low-tech users and caregivers." },
+  { type: "constraint", text: "Pilot scope and timeline must fit NYSOFA implementation windows." },
+  { type: "constraint", text: "Initial rollout should prioritize lowest operational overhead." },
+  { type: "question", text: "Which outcomes are mandatory for pilot success sign-off?" },
+  { type: "question", text: "Which integrations are required for day-one reporting?" },
+  { type: "risk", text: "Data quality and missing inputs could reduce confidence in pilot analytics." },
+  { type: "action", text: "Confirm final success metrics and owners before go-live." },
+];
+
 async function main() {
   initializeApp({ credential: applicationDefault(), projectId });
   const db = getFirestore();
@@ -72,8 +83,13 @@ async function main() {
   for (const feature of FEATURE_SEED) {
     batch.set(db.collection("sessions/default/features").doc(), feature);
   }
+  for (const item of ITEM_SEED) {
+    batch.set(db.collection("sessions/default/items").doc(), item);
+  }
   await batch.commit();
-  console.log(`Seed complete for project ${projectId}: ${FEATURE_SEED.length} features.`);
+  console.log(
+    `Seed complete for project ${projectId}: ${FEATURE_SEED.length} features, ${ITEM_SEED.length} items.`
+  );
 }
 
 main().catch((error) => {

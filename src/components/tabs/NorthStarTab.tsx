@@ -7,7 +7,42 @@ interface NorthStarTabProps {
   constraints: SessionItem[];
   onSaveSessionField: (field: SessionField, value: string) => Promise<void>;
   onAddTag: (type: "nonNegotiable" | "constraint", text: string) => Promise<void>;
+  onUpdateTag: (id: string, text: string) => Promise<void>;
   onDeleteTag: (id: string) => Promise<void>;
+}
+
+interface EditableTagListProps {
+  items: SessionItem[];
+  onUpdate: (id: string, text: string) => Promise<void>;
+  onDelete: (id: string) => Promise<void>;
+}
+
+function EditableTagList({ items, onUpdate, onDelete }: EditableTagListProps) {
+  return (
+    <div>
+      {items.map((item) => (
+        <div key={item.id} className="risk-item">
+          <input
+            className="input"
+            defaultValue={item.text}
+            onBlur={(event) => {
+              const cleaned = event.target.value.trim();
+              if (!cleaned) {
+                event.target.value = item.text;
+                return;
+              }
+              if (cleaned !== item.text) {
+                void onUpdate(item.id, cleaned);
+              }
+            }}
+          />
+          <button type="button" className="del" onClick={() => void onDelete(item.id)}>
+            remove
+          </button>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 export function NorthStarTab({
@@ -16,6 +51,7 @@ export function NorthStarTab({
   constraints,
   onSaveSessionField,
   onAddTag,
+  onUpdateTag,
   onDeleteTag,
 }: NorthStarTabProps) {
   const [nnInput, setNnInput] = useState("");
@@ -36,13 +72,7 @@ export function NorthStarTab({
 
       <div className="star-box">
         <div className="mini-hdr">Non-negotiables for MVP pilot</div>
-        <div className="constr-tags">
-          {nonNegotiables.map((item) => (
-            <button key={item.id} className="tag" onClick={() => onDeleteTag(item.id)} type="button">
-              {item.text} <span className="tag-remove">x</span>
-            </button>
-          ))}
-        </div>
+        <EditableTagList items={nonNegotiables} onUpdate={onUpdateTag} onDelete={onDeleteTag} />
         <div className="row">
           <input
             className="input"
@@ -64,13 +94,7 @@ export function NorthStarTab({
 
       <div className="star-box">
         <div className="mini-hdr">Constraints</div>
-        <div className="constr-tags">
-          {constraints.map((item) => (
-            <button key={item.id} className="tag" onClick={() => onDeleteTag(item.id)} type="button">
-              {item.text} <span className="tag-remove">x</span>
-            </button>
-          ))}
-        </div>
+        <EditableTagList items={constraints} onUpdate={onUpdateTag} onDelete={onDeleteTag} />
         <div className="row">
           <input
             className="input"

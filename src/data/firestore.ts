@@ -111,13 +111,25 @@ export async function addSessionItem(type: ItemType, text: string) {
   await addDoc(ITEMS_PATH, { type, text });
 }
 
+export async function updateSessionItem(id: string, text: string) {
+  await updateDoc(doc(ITEMS_PATH, id), { text });
+}
+
 export async function deleteSessionItem(id: string) {
   await deleteDoc(doc(ITEMS_PATH, id));
 }
 
 export async function updateFeature(
   featureId: string,
-  patch: Partial<Pick<Feature, "bucket" | "priority" | "status" | "domain" | "note">>
+  patch: Partial<Pick<Feature, "name" | "bucket" | "priority" | "status" | "domain" | "note">>
 ) {
   await updateDoc(doc(FEATURES_PATH, featureId), patch);
+}
+
+export async function addFeature(feature: Omit<Feature, "id">) {
+  await addDoc(FEATURES_PATH, feature);
+}
+
+export async function deleteFeature(featureId: string) {
+  await deleteDoc(doc(FEATURES_PATH, featureId));
 }

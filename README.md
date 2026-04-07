@@ -95,7 +95,7 @@ The deploy scripts run `npm ci`, `npm run lint`, `npm run build`, and `firebase 
 Available seed commands:
 
 - `npm run seed:data`
-  - Writes `sessions/default` and the seeded `features` collection.
+  - Writes `sessions/default`, seeded `features`, and seeded `items` (non-negotiables, constraints, open questions, risks, actions).
   - Requires Google application default credentials.
 - `npm run seed:reset`
   - Deletes all Firestore collections, then reseeds data.
@@ -112,6 +112,7 @@ firebase firestore:delete --all-collections --force
 ```
 
 Then they reseed `sessions/default` and `sessions/default/features`.
+and `sessions/default/items`.
 
 ## Recommended workflow
 

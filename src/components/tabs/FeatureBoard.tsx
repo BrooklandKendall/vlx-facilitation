@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FEATURE_DOMAINS, P_LABEL, S_LABEL, type Feature } from "../../types";
 
 const PRIORITIES: Array<Feature["priority"]> = ["high", "med", "low"];
@@ -12,19 +13,36 @@ interface FeatureBoardProps {
   features: Feature[];
   filterDomain: string;
   onFilterDomain: (domain: string) => void;
+  onAddFeature: (name: string, domain: string) => Promise<void>;
+  onDeleteFeature: (featureId: string) => Promise<void>;
   onUpdateFeature: (
     featureId: string,
-    patch: Partial<Pick<Feature, "bucket" | "priority" | "status" | "domain" | "note">>
+    patch: Partial<Pick<Feature, "name" | "bucket" | "priority" | "status" | "domain" | "note">>
   ) => Promise<void>;
 }
 
-export function FeatureBoard({ features, filterDomain, onFilterDomain, onUpdateFeature }: FeatureBoardProps) {
+export function FeatureBoard({
+  features,
+  filterDomain,
+  onFilterDomain,
+  onAddFeature,
+  onDeleteFeature,
+  onUpdateFeature,
+}: FeatureBoardProps) {
+  const [newFeatureName, setNewFeatureName] = useState("");
+  const [newFeatureDomain, setNewFeatureDomain] = useState<string>(FEATURE_DOMAINS[0]);
   const visible = filterDomain === "all" ? features : features.filter((feature) => feature.domain === filterDomain);
   const sortedByTitle = [...visible].sort((left, right) => left.name.localeCompare(right.name));
   const counts = {
     mvp: features.filter((feature) => feature.bucket === "mvp").length,
     v2x: features.filter((feature) => feature.bucket === "v2x").length,
     def: features.filter((feature) => feature.bucket === "def").length,
+  };
+  const submitNewFeature = async () => {
+    const cleaned = newFeatureName.trim();
+    if (!cleaned) return;
+    await onAddFeature(cleaned, newFeatureDomain);
+    setNewFeatureName("");
   };
 
   return (
@@ -39,6 +57,28 @@ export function FeatureBoard({ features, filterDomain, onFilterDomain, onUpdateF
             </option>
           ))}
         </select>
+        <input
+          className="input"
+          value={newFeatureName}
+          onChange={(event) => setNewFeatureName(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              void submitNewFeature();
+            }
+          }}
+          placeholder="New feature name..."
+        />
+        <select value={newFeatureDomain} onChange={(event) => setNewFeatureDomain(event.target.value)}>
+          {FEATURE_DOMAINS.map((domain) => (
+            <option key={domain} value={domain}>
+              {domain}
+            </option>
+          ))}
+        </select>
+        <button type="button" className="btn" onClick={() => void submitNewFeature()}>
+          Add feature
+        </button>
       </div>
 
       <div className="legend">
@@ -70,7 +110,26 @@ export function FeatureBoard({ features, filterDomain, onFilterDomain, onUpdateF
               .filter((feature) => feature.bucket === column.key)
               .map((feature) => (
                 <div key={feature.id} className="feat-card">
-                  <div className="feat-name">{feature.name}</div>
+                  <div className="feat-card-top">
+                    <input
+                      className="feat-name-input"
+                      defaultValue={feature.name}
+                      placeholder="Feature name"
+                      onBlur={(event) => {
+                        const trimmed = event.target.value.trim();
+                        if (!trimmed) {
+                          event.target.value = feature.name;
+                          return;
+                        }
+                        if (trimmed !== feature.name) {
+                          void onUpdateFeature(feature.id, { name: trimmed });
+                        }
+                      }}
+                    />
+                    <button type="button" className="del" onClick={() => void onDeleteFeature(feature.id)}>
+                      remove
+                    </button>
+                  </div>
                   <div className="feat-controls">
                     <label className="feat-field">
                       <span>Domain</span>

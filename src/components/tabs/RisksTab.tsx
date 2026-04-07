@@ -6,6 +6,7 @@ interface RisksTabProps {
   risks: SessionItem[];
   actions: SessionItem[];
   onAddItem: (type: "question" | "risk" | "action", text: string) => Promise<void>;
+  onUpdateItem: (id: string, text: string) => Promise<void>;
   onDeleteItem: (id: string) => Promise<void>;
 }
 
@@ -14,10 +15,11 @@ interface ListEditorProps {
   placeholder: string;
   items: SessionItem[];
   onAdd: (value: string) => Promise<void>;
+  onUpdate: (id: string, value: string) => Promise<void>;
   onDelete: (id: string) => Promise<void>;
 }
 
-function ListEditor({ title, placeholder, items, onAdd, onDelete }: ListEditorProps) {
+function ListEditor({ title, placeholder, items, onAdd, onUpdate, onDelete }: ListEditorProps) {
   const [draft, setDraft] = useState("");
 
   const submit = async () => {
@@ -33,7 +35,20 @@ function ListEditor({ title, placeholder, items, onAdd, onDelete }: ListEditorPr
       <div>
         {items.map((item) => (
           <div key={item.id} className="risk-item">
-            <span className="risk-text">{item.text}</span>
+            <input
+              className="input"
+              defaultValue={item.text}
+              onBlur={(event) => {
+                const cleaned = event.target.value.trim();
+                if (!cleaned) {
+                  event.target.value = item.text;
+                  return;
+                }
+                if (cleaned !== item.text) {
+                  void onUpdate(item.id, cleaned);
+                }
+              }}
+            />
             <button type="button" className="del" onClick={() => void onDelete(item.id)}>
               remove
             </button>
@@ -61,7 +76,7 @@ function ListEditor({ title, placeholder, items, onAdd, onDelete }: ListEditorPr
   );
 }
 
-export function RisksTab({ questions, risks, actions, onAddItem, onDeleteItem }: RisksTabProps) {
+export function RisksTab({ questions, risks, actions, onAddItem, onUpdateItem, onDeleteItem }: RisksTabProps) {
   return (
     <div>
       <div className="section-hdr">Open questions & risk register</div>
@@ -71,6 +86,7 @@ export function RisksTab({ questions, risks, actions, onAddItem, onDeleteItem }:
           placeholder="Unresolved question or decision needed..."
           items={questions}
           onAdd={(value) => onAddItem("question", value)}
+          onUpdate={onUpdateItem}
           onDelete={onDeleteItem}
         />
         <ListEditor
@@ -78,6 +94,7 @@ export function RisksTab({ questions, risks, actions, onAddItem, onDeleteItem }:
           placeholder="Risk or concern to flag..."
           items={risks}
           onAdd={(value) => onAddItem("risk", value)}
+          onUpdate={onUpdateItem}
           onDelete={onDeleteItem}
         />
       </div>
@@ -87,6 +104,7 @@ export function RisksTab({ questions, risks, actions, onAddItem, onDeleteItem }:
           placeholder="Action item + owner (e.g. Alan: confirm Mia Health BAA timeline)"
           items={actions}
           onAdd={(value) => onAddItem("action", value)}
+          onUpdate={onUpdateItem}
           onDelete={onDeleteItem}
         />
       </div>

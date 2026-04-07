@@ -6,7 +6,9 @@ import { NorthStarTab } from "./components/tabs/NorthStarTab";
 import { RisksTab } from "./components/tabs/RisksTab";
 import { SummaryTab } from "./components/tabs/SummaryTab";
 import {
+  addFeature,
   addSessionItem,
+  deleteFeature,
   deleteSessionItem,
   ensureSessionDoc,
   subscribeFeatures,
@@ -14,6 +16,7 @@ import {
   subscribeSession,
   updateFeature,
   updateSessionField,
+  updateSessionItem,
 } from "./data/firestore";
 import {
   ITEM_TYPE_LABELS,
@@ -165,6 +168,7 @@ function App() {
           constraints={itemsByType.constraint}
           onSaveSessionField={updateSessionField}
           onAddTag={addSessionItem}
+          onUpdateTag={updateSessionItem}
           onDeleteTag={deleteSessionItem}
         />
       ) : null}
@@ -173,6 +177,19 @@ function App() {
           features={features}
           filterDomain={featureDomain}
           onFilterDomain={setFeatureDomain}
+          onAddFeature={async (name, domain) => {
+            const nextSeedId = features.reduce((max, feature) => Math.max(max, feature.seedId), 0) + 1;
+            await addFeature({
+              seedId: nextSeedId,
+              name,
+              domain,
+              priority: "med",
+              status: "new",
+              bucket: "def",
+              note: "",
+            });
+          }}
+          onDeleteFeature={deleteFeature}
           onUpdateFeature={updateFeature}
         />
       ) : null}
@@ -182,6 +199,7 @@ function App() {
           risks={itemsByType.risk}
           actions={itemsByType.action}
           onAddItem={addSessionItem}
+          onUpdateItem={updateSessionItem}
           onDeleteItem={deleteSessionItem}
         />
       ) : null}
