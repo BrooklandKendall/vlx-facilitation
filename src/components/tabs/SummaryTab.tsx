@@ -3,9 +3,18 @@ interface SummaryTabProps {
   onGenerate: () => void;
   onCopy: () => void;
   onExport: () => void;
+  onExportDbJson: () => void;
+  onExportDbFirestore: () => void;
 }
 
-export function SummaryTab({ summaryText, onGenerate, onCopy, onExport }: SummaryTabProps) {
+export function SummaryTab({
+  summaryText,
+  onGenerate,
+  onCopy,
+  onExport,
+  onExportDbJson,
+  onExportDbFirestore,
+}: SummaryTabProps) {
   return (
     <div>
       <div className="ctrl-row">
@@ -17,6 +26,12 @@ export function SummaryTab({ summaryText, onGenerate, onCopy, onExport }: Summar
         </button>
         <button className="btn" type="button" onClick={onExport}>
           Export text file
+        </button>
+        <button className="btn" type="button" onClick={onExportDbJson}>
+          Export DB JSON
+        </button>
+        <button className="btn" type="button" onClick={onExportDbFirestore}>
+          Export Firestore format
         </button>
       </div>
       <div className="summary-box">{summaryText}</div>

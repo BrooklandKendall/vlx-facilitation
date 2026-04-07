@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
 import { AppShell, type ActiveTab } from "./components/AppShell";
 import { AgendaTab } from "./components/tabs/AgendaTab";
 import { FeatureBoard } from "./components/tabs/FeatureBoard";
 import { NorthStarTab } from "./components/tabs/NorthStarTab";
 import { RisksTab } from "./components/tabs/RisksTab";
 import { SummaryTab } from "./components/tabs/SummaryTab";
+import { db } from "./firebase";
 import {
   addFeature,
   addSessionItem,
@@ -27,6 +29,13 @@ import {
   type SessionDoc,
   type SessionItem,
 } from "./types";
+
+type ExportSession = {
+  id: string;
+  data: Record<string, unknown>;
+  features: Array<Record<string, unknown> & { id: string }>;
+  items: Array<Record<string, unknown> & { id: string }>;
+};
 
 function generateSummary(session: SessionDoc, features: Feature[], items: SessionItem[]) {
   const mvp = features.filter((feature) => feature.bucket === "mvp");
@@ -82,6 +91,37 @@ function generateSummary(session: SessionDoc, features: Feature[], items: Sessio
   });
 
   return lines.join("\n").trimEnd();
+}
+
+function downloadTextFile(filename: string, content: string, contentType = "text/plain;charset=utf-8") {
+  const blob = new Blob([content], { type: contentType });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  anchor.click();
+  URL.revokeObjectURL(url);
+}
+
+async function fetchSessionsDump(): Promise<ExportSession[]> {
+  const sessionsSnap = await getDocs(collection(db, "sessions"));
+  const out: ExportSession[] = [];
+
+  for (const sessionDoc of sessionsSnap.docs) {
+    const [featuresSnap, itemsSnap] = await Promise.all([
+      getDocs(collection(db, "sessions", sessionDoc.id, "features")),
+      getDocs(collection(db, "sessions", sessionDoc.id, "items")),
+    ]);
+
+    out.push({
+      id: sessionDoc.id,
+      data: sessionDoc.data(),
+      features: featuresSnap.docs.map((doc) => ({ id: doc.id, ...(doc.data() as Record<string, unknown>) })),
+      items: itemsSnap.docs.map((doc) => ({ id: doc.id, ...(doc.data() as Record<string, unknown>) })),
+    });
+  }
+
+  return out;
 }
 
 function App() {
@@ -146,13 +186,7 @@ function App() {
   );
 
   const onExport = () => {
-    const blob = new Blob([summaryText], { type: "text/plain;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = "vlx-session-output.txt";
-    anchor.click();
-    URL.revokeObjectURL(url);
+    downloadTextFile("vlx-session-output.txt", summaryText);
   };
 
   return (
@@ -215,6 +249,62 @@ function App() {
             }
           }}
           onExport={onExport}
+          onExportDbJson={async () => {
+            try {
+              const sessions = await fetchSessionsDump();
+              const payload = {
+                exportedAt: new Date().toISOString(),
+                source: "facilitation-app",
+                collections: { sessions },
+              };
+              downloadTextFile(
+                "firestore-dump.json",
+                `${JSON.stringify(payload, null, 2)}\n`,
+                "application/json;charset=utf-8"
+              );
+            } catch (caught) {
+              const message = caught instanceof Error ? caught.message : "Unknown export error";
+              setError(`Database export failed: ${message}`);
+            }
+          }}
+          onExportDbFirestore={async () => {
+            try {
+              const sessions = await fetchSessionsDump();
+              const collectionMap: Record<string, Record<string, Record<string, unknown>>> = {
+                sessions: {},
+              };
+
+              for (const session of sessions) {
+                const featuresMap: Record<string, Record<string, unknown>> = {};
+                const itemsMap: Record<string, Record<string, unknown>> = {};
+                for (const feature of session.features) {
+                  const { id, ...data } = feature;
+                  featuresMap[id] = data;
+                }
+                for (const item of session.items) {
+                  const { id, ...data } = item;
+                  itemsMap[id] = data;
+                }
+
+                collectionMap.sessions[session.id] = {
+                  ...session.data,
+                  __collections__: {
+                    features: featuresMap,
+                    items: itemsMap,
+                  },
+                };
+              }
+
+              downloadTextFile(
+                "firestore-export-nested.json",
+                `${JSON.stringify(collectionMap, null, 2)}\n`,
+                "application/json;charset=utf-8"
+              );
+            } catch (caught) {
+              const message = caught instanceof Error ? caught.message : "Unknown export error";
+              setError(`Firestore-format export failed: ${message}`);
+            }
+          }}
         />
       ) : null}
     </AppShell>
