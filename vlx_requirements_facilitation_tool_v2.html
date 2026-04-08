@@ -1,0 +1,415 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);background:transparent;color:var(--color-text-primary)}
+.nav{display:flex;gap:4px;border-bottom:0.5px solid var(--color-border-tertiary);padding:0;margin-bottom:1.5rem;flex-wrap:wrap}
+.nav-btn{padding:8px 14px;font-size:13px;border:none;background:none;color:var(--color-text-secondary);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-0.5px}
+.nav-btn.active{color:var(--color-text-primary);border-bottom-color:var(--color-text-primary);font-weight:500}
+.tab{display:none}.tab.active{display:block}
+.badge{display:inline-block;font-size:11px;padding:2px 7px;border-radius:20px;font-weight:500;cursor:pointer;user-select:none;transition:opacity 0.1s}
+.badge:hover{opacity:0.75}
+.badge[title]::after{content:" ↺";font-size:10px;opacity:0.6}
+.b-high{background:#FAECE7;color:#993C1D}
+.b-med{background:#FAEEDA;color:#854F0B}
+.b-low{background:#EAF3DE;color:#3B6D11}
+.b-full{background:#EAF3DE;color:#3B6D11}
+.b-part{background:#FAEEDA;color:#854F0B}
+.b-new{background:#F1EFE8;color:#5F5E5A}
+.col-wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-items:start}
+.col{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px}
+.col-hdr{font-size:13px;font-weight:500;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.col-count{font-size:12px;color:var(--color-text-secondary)}
+.feat-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 12px;margin-bottom:8px}
+.feat-card:hover{border-color:var(--color-border-secondary)}
+.feat-name{font-size:13px;font-weight:500;margin-bottom:5px;cursor:pointer}
+.feat-name:hover{text-decoration:underline;text-underline-offset:2px}
+.feat-meta{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.domain-tag{font-size:11px;color:var(--color-text-secondary)}
+.move-hint{font-size:11px;color:var(--color-text-tertiary);margin-left:auto;cursor:pointer}
+.move-hint:hover{color:var(--color-text-secondary)}
+.feat-note{margin-top:6px}
+.feat-note input{width:100%;font-size:12px;padding:4px 7px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-primary)}
+.ctrl-row{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
+.ctrl-row select{font-size:13px;padding:5px 8px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-primary)}
+.ctrl-row label{font-size:13px;color:var(--color-text-secondary)}
+.section-hdr{font-size:14px;font-weight:500;margin-bottom:1rem}
+.btn{font-size:13px;padding:7px 14px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;color:var(--color-text-primary);cursor:pointer}
+.btn:hover{background:var(--color-background-secondary)}
+.btn-primary{background:var(--color-text-primary);color:var(--color-background-primary);border-color:var(--color-text-primary)}
+.btn-primary:hover{opacity:0.85;background:var(--color-text-primary)}
+.risk-item{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:start;gap:8px}
+.risk-item .del{font-size:12px;cursor:pointer;color:var(--color-text-tertiary)}
+.risk-item .del:hover{color:var(--color-text-primary)}
+.summary-box{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px;font-size:13px;line-height:1.7;white-space:pre-wrap;font-family:var(--font-mono);max-height:420px;overflow-y:auto}
+.metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
+.metric{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px;text-align:center}
+.metric-n{font-size:22px;font-weight:500}
+.metric-l{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.agenda-item{font-size:13px;padding:6px 0;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;gap:10px;align-items:baseline}
+.agenda-item:last-child{border-bottom:none}
+.agenda-item .time{color:var(--color-text-secondary);font-size:12px;width:70px;flex-shrink:0}
+.star-box{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px;margin-bottom:12px}
+.constr-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.tag{font-size:12px;padding:3px 10px;border-radius:20px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);color:var(--color-text-secondary);cursor:pointer;display:flex;align-items:center;gap:4px}
+.legend{font-size:12px;color:var(--color-text-secondary);display:flex;gap:14px;flex-wrap:wrap;padding:8px 10px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);margin-bottom:12px}
+.legend-item{display:flex;align-items:center;gap:5px}
+</style>
+
+<div style="padding:1rem 0">
+<div class="nav">
+  <button class="nav-btn active" onclick="showTab('agenda')">Agenda</button>
+  <button class="nav-btn" onclick="showTab('northstar')">North star</button>
+  <button class="nav-btn" onclick="showTab('features')">Feature sort</button>
+  <button class="nav-btn" onclick="showTab('risks')">Open questions</button>
+  <button class="nav-btn" onclick="showTab('summary')">Session output</button>
+</div>
+
+<div id="agenda" class="tab active">
+  <div class="metric-row">
+    <div class="metric"><div class="metric-n" id="m-mvp">0</div><div class="metric-l">MVP features</div></div>
+    <div class="metric"><div class="metric-n" id="m-v2x">0</div><div class="metric-l">VLx 2.x features</div></div>
+    <div class="metric"><div class="metric-n" id="m-def">0</div><div class="metric-l">Deferred</div></div>
+  </div>
+  <div class="section-hdr">3-hour session flow</div>
+  <div style="margin-bottom:1.5rem">
+    <div class="agenda-item"><span class="time">0:00 – 0:25</span><span><strong>North star</strong> — Non-negotiables, constraints, budget envelope <span style="color:var(--color-text-tertiary);font-size:12px">(Amy)</span></span></div>
+    <div class="agenda-item"><span class="time">0:25 – 0:50</span><span><strong>Personas</strong> — Care recipient, family caregiver, EverHome coordinator <span style="color:var(--color-text-tertiary);font-size:12px">(John)</span></span></div>
+    <div class="agenda-item"><span class="time">0:50 – 1:50</span><span><strong>Feature sort</strong> — MVP vs VLx 2.x vs Deferred, effort sizing <span style="color:var(--color-text-tertiary);font-size:12px">(Alan)</span></span></div>
+    <div class="agenda-item"><span class="time">1:50 – 2:20</span><span><strong>Onboarding flow</strong> — Accessibility, subscription, caregiver setup <span style="color:var(--color-text-tertiary);font-size:12px">(Diane)</span></span></div>
+    <div class="agenda-item"><span class="time">2:20 – 2:50</span><span><strong>Open questions & risks</strong> — What could go wrong, action items <span style="color:var(--color-text-tertiary);font-size:12px">(All)</span></span></div>
+    <div class="agenda-item"><span class="time">2:50 – 3:00</span><span><strong>Wrap & next steps</strong> — Confirm outputs, assign owners</span></div>
+  </div>
+  <div class="section-hdr">Session outputs</div>
+  <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.9">
+    <div>— Confirmed MVP feature set for NYSOFA pilot</div>
+    <div>— VLx 2.x roadmap feature list</div>
+    <div>— Documented constraints, budget ceiling, and non-negotiables</div>
+    <div>— Persona definitions (3 primary roles)</div>
+    <div>— Prioritized open questions and risk register</div>
+    <div style="margin-top:4px;color:var(--color-text-tertiary)">→ Feeds into: PRD, user stories, architecture plan</div>
+  </div>
+</div>
+
+<div id="northstar" class="tab">
+  <div class="section-hdr">North star & constraints</div>
+  <div class="star-box">
+    <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px;font-weight:500">Non-negotiables for MVP pilot</div>
+    <div id="nn-tags" class="constr-tags"></div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <input id="nn-input" style="flex:1;font-size:13px;padding:5px 8px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary)" placeholder="Type a non-negotiable and press enter" onkeydown="addTag(event,'nn')">
+      <button class="btn" onclick="addTagBtn('nn')">Add</button>
+    </div>
+  </div>
+  <div class="star-box">
+    <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px;font-weight:500">Constraints</div>
+    <div id="con-tags" class="constr-tags"></div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <input id="con-input" style="flex:1;font-size:13px;padding:5px 8px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary)" placeholder="e.g. $140K budget ceiling, 90-day timeline" onkeydown="addTag(event,'con')">
+      <button class="btn" onclick="addTagBtn('con')">Add</button>
+    </div>
+  </div>
+  <div class="section-hdr" style="margin-top:1.5rem">Personas</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+    <div>
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:4px;font-weight:500">Care recipient</div>
+      <textarea style="width:100%;font-size:12px;padding:7px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);min-height:100px;resize:vertical" placeholder="Age range, conditions, tech comfort, connectivity, device type..."></textarea>
+    </div>
+    <div>
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:4px;font-weight:500">Family caregiver</div>
+      <textarea id="p2" style="width:100%;font-size:12px;padding:7px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);min-height:100px;resize:vertical" placeholder="Relationship, availability, tech literacy, primary concerns..."></textarea>
+    </div>
+    <div>
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:4px;font-weight:500">EverHome coordinator</div>
+      <textarea id="p3" style="width:100%;font-size:12px;padding:7px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);min-height:100px;resize:vertical" placeholder="Caseload size, workflow, reporting requirements, escalation triggers..."></textarea>
+    </div>
+  </div>
+  <div style="margin-top:1rem">
+    <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:4px;font-weight:500">Success criteria for the NYSOFA pilot</div>
+    <textarea id="success-crit" style="width:100%;font-size:13px;padding:8px 10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);min-height:60px;resize:vertical" placeholder="e.g. ≥85% scan success rate, ≥60% weekly active usage, NYSOFA reporting capability..."></textarea>
+  </div>
+</div>
+
+<div id="features" class="tab">
+  <div class="ctrl-row">
+    <label>Filter:</label>
+    <select onchange="filterDomain(this.value)">
+      <option value="all">All domains</option>
+      <option value="Platform">Platform & device</option>
+      <option value="Vitals">Vitals & biometrics</option>
+      <option value="Safety">Safety & emergency</option>
+      <option value="AI">AI & intelligence</option>
+      <option value="Wellness">Wellness scoring</option>
+      <option value="Medication">Medication mgmt</option>
+      <option value="Communications">Communications</option>
+      <option value="Care Coordination">Care coordination</option>
+      <option value="Caregiver">Caregiver tools</option>
+      <option value="Social">Social & wellbeing</option>
+      <option value="Privacy">Privacy & security</option>
+      <option value="Analytics">Analytics & infra</option>
+    </select>
+    <button class="btn" onclick="sendPrompt('Based on the VLx 2.0 NYSOFA pilot scope, which features are highest risk to include in the MVP and why?')">Ask Claude about trade-offs ↗</button>
+  </div>
+  <div class="legend">
+    <span style="font-weight:500;color:var(--color-text-primary)">Click to cycle:</span>
+    <span class="legend-item"><span class="badge b-high">High</span><span class="badge b-med" style="margin-left:2px">Med</span><span class="badge b-low" style="margin-left:2px">Low</span> priority</span>
+    <span class="legend-item"><span class="badge b-full">Built</span><span class="badge b-part" style="margin-left:2px">Partial</span><span class="badge b-new" style="margin-left:2px">New</span> status</span>
+    <span class="legend-item" style="color:var(--color-text-tertiary)">Underlined name → move bucket</span>
+  </div>
+  <div class="col-wrap">
+    <div class="col">
+      <div class="col-hdr" style="color:#085041">MVP / Pilot <span class="col-count" id="cnt-mvp"></span></div>
+      <div id="col-mvp"></div>
+    </div>
+    <div class="col">
+      <div class="col-hdr" style="color:#0C447C">VLx 2.x <span class="col-count" id="cnt-v2x"></span></div>
+      <div id="col-v2x"></div>
+    </div>
+    <div class="col">
+      <div class="col-hdr" style="color:#444441">Deferred <span class="col-count" id="cnt-def"></span></div>
+      <div id="col-def"></div>
+    </div>
+  </div>
+</div>
+
+<div id="risks" class="tab">
+  <div class="section-hdr">Open questions & risk register</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div>
+      <div style="font-size:13px;font-weight:500;margin-bottom:10px">Open questions</div>
+      <div id="q-list"></div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <input id="q-input" style="flex:1;font-size:13px;padding:6px 8px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary)" placeholder="Unresolved question or decision needed..." onkeydown="addItem(event,'q')">
+        <button class="btn" onclick="addItemBtn('q')">Add</button>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:13px;font-weight:500;margin-bottom:10px">Risks</div>
+      <div id="r-list"></div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <input id="r-input" style="flex:1;font-size:13px;padding:6px 8px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary)" placeholder="Risk or concern to flag..." onkeydown="addItem(event,'r')">
+        <button class="btn" onclick="addItemBtn('r')">Add</button>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:1.5rem">
+    <div style="font-size:13px;font-weight:500;margin-bottom:10px">Action items</div>
+    <div id="a-list"></div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <input id="a-input" style="flex:1;font-size:13px;padding:6px 8px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary)" placeholder="Action item + owner (e.g. Alan: confirm Mia Health BAA timeline)" onkeydown="addItem(event,'a')">
+      <button class="btn" onclick="addItemBtn('a')">Add</button>
+    </div>
+  </div>
+</div>
+
+<div id="summary" class="tab">
+  <div style="display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap">
+    <button class="btn btn-primary" onclick="generateSummary()">Generate session output</button>
+    <button class="btn" onclick="copySummary()">Copy to clipboard</button>
+    <button class="btn" onclick="sendPrompt('Based on this requirements session output, draft the VLx 2.0 NYSOFA Pilot PRD structure and key user stories for the MVP feature set.')">Generate PRD draft ↗</button>
+  </div>
+  <div class="summary-box" id="summary-out">Click "Generate session output" to compile all captured decisions.</div>
+</div>
+</div>
+
+<script>
+const FEATURES = [
+  {id:1,name:"Multi-Device App Platform",domain:"Platform",priority:"high",v2:"full",bucket:"mvp",note:""},
+  {id:2,name:"Administrative Web Console",domain:"Platform",priority:"high",v2:"full",bucket:"mvp",note:""},
+  {id:3,name:"Onboarding & Setup Flow",domain:"Platform",priority:"high",v2:"part",bucket:"mvp",note:""},
+  {id:4,name:"Offline Mode & Low-Bandwidth Support",domain:"Platform",priority:"med",v2:"new",bucket:"v2x",note:""},
+  {id:5,name:"Facial Scan Vitals (Mia Health)",domain:"Vitals",priority:"high",v2:"full",bucket:"mvp",note:""},
+  {id:6,name:"Connected Device Vitals",domain:"Vitals",priority:"high",v2:"full",bucket:"v2x",note:""},
+  {id:7,name:"AI Biometric Analytics",domain:"Vitals",priority:"high",v2:"full",bucket:"v2x",note:""},
+  {id:8,name:"Role-Based Vitals Reporting",domain:"Vitals",priority:"med",v2:"full",bucket:"mvp",note:""},
+  {id:9,name:"Population Health Dashboard",domain:"Vitals",priority:"med",v2:"new",bucket:"v2x",note:""},
+  {id:10,name:"Proof-of-Life Check-In",domain:"Safety",priority:"high",v2:"full",bucket:"mvp",note:""},
+  {id:11,name:"Fall Detection",domain:"Safety",priority:"high",v2:"part",bucket:"v2x",note:""},
+  {id:12,name:"Emergency Telemedicine Access",domain:"Safety",priority:"high",v2:"full",bucket:"mvp",note:""},
+  {id:13,name:"Environmental Sensors Integration",domain:"Safety",priority:"med",v2:"part",bucket:"def",note:""},
+  {id:14,name:"911 & Emergency Services Integration",domain:"Safety",priority:"med",v2:"new",bucket:"def",note:""},
+  {id:15,name:"Agentic AI Core (Mia Health)",domain:"AI",priority:"high",v2:"full",bucket:"mvp",note:""},
+  {id:16,name:"Health Risk Identification",domain:"AI",priority:"high",v2:"part",bucket:"v2x",note:""},
+  {id:17,name:"Behavioral Nudge Engine",domain:"AI",priority:"med",v2:"part",bucket:"v2x",note:""},
+  {id:18,name:"Voice AI Assistant",domain:"AI",priority:"med",v2:"new",bucket:"def",note:""},
+  {id:19,name:"Multilingual & Cultural Adaptation",domain:"AI",priority:"low",v2:"new",bucket:"def",note:""},
+  {id:20,name:"Proprietary Wellness Score",domain:"Wellness",priority:"high",v2:"full",bucket:"mvp",note:""},
+  {id:21,name:"Health Education Content Library",domain:"Wellness",priority:"med",v2:"full",bucket:"v2x",note:""},
+  {id:22,name:"Stress Detection",domain:"Wellness",priority:"med",v2:"part",bucket:"v2x",note:""},
+  {id:23,name:"Medication Tracking & Sharing",domain:"Medication",priority:"high",v2:"full",bucket:"mvp",note:""},
+  {id:24,name:"Medication Reminders",domain:"Medication",priority:"high",v2:"full",bucket:"mvp",note:""},
+  {id:25,name:"Video Conferencing",domain:"Communications",priority:"high",v2:"full",bucket:"mvp",note:""},
+  {id:26,name:"Content Sharing (Photos/Docs/Videos)",domain:"Communications",priority:"med",v2:"full",bucket:"v2x",note:""},
+  {id:27,name:"Care Team Messaging",domain:"Communications",priority:"med",v2:"part",bucket:"v2x",note:""},
+  {id:28,name:"Shared Calendar",domain:"Care Coordination",priority:"high",v2:"full",bucket:"mvp",note:""},
+  {id:29,name:"To-Do List & Care Tasks",domain:"Care Coordination",priority:"med",v2:"full",bucket:"v2x",note:""},
+  {id:30,name:"Caregiver Activity Logs (EVV)",domain:"Care Coordination",priority:"high",v2:"full",bucket:"mvp",note:""},
+  {id:31,name:"Secure Document Vault",domain:"Care Coordination",priority:"high",v2:"full",bucket:"mvp",note:""},
+  {id:32,name:"EHR / Provider Integration",domain:"Care Coordination",priority:"high",v2:"new",bucket:"def",note:""},
+  {id:33,name:"Longitudinal Care Timeline",domain:"Care Coordination",priority:"med",v2:"part",bucket:"v2x",note:""},
+  {id:34,name:"Family Caregiver App",domain:"Caregiver",priority:"high",v2:"full",bucket:"mvp",note:""},
+  {id:35,name:"Caregiver Support Resources",domain:"Caregiver",priority:"med",v2:"full",bucket:"v2x",note:""},
+  {id:36,name:"Notification & Alert Management",domain:"Caregiver",priority:"med",v2:"part",bucket:"mvp",note:""},
+  {id:37,name:"Senior Activity & Learning (GetSetUp)",domain:"Social",priority:"med",v2:"full",bucket:"v2x",note:""},
+  {id:38,name:"Daily Routine & ADL Tracking",domain:"Social",priority:"med",v2:"part",bucket:"v2x",note:""},
+  {id:39,name:"Senior Social Connection",domain:"Social",priority:"low",v2:"new",bucket:"def",note:""},
+  {id:40,name:"Privacy-Forward Video (Consent-Only)",domain:"Privacy",priority:"high",v2:"full",bucket:"mvp",note:""},
+  {id:41,name:"HIPAA Compliance Certification",domain:"Privacy",priority:"high",v2:"part",bucket:"mvp",note:""},
+  {id:42,name:"Role-Based Access Control + Audit Trail",domain:"Privacy",priority:"high",v2:"part",bucket:"mvp",note:""},
+  {id:43,name:"Feature Usage Analytics Dashboard",domain:"Analytics",priority:"high",v2:"new",bucket:"mvp",note:""},
+  {id:44,name:"In-App Feedback & NPS System",domain:"Analytics",priority:"high",v2:"new",bucket:"v2x",note:""},
+  {id:45,name:"Clinical Trial Cohort Management",domain:"Analytics",priority:"high",v2:"new",bucket:"v2x",note:""},
+  {id:46,name:"ER Avoidance & Acute Event Capture",domain:"Analytics",priority:"high",v2:"part",bucket:"v2x",note:""},
+  {id:47,name:"System Health Monitoring & Error Telemetry",domain:"Analytics",priority:"high",v2:"new",bucket:"mvp",note:""},
+  {id:48,name:"A/B Testing Infrastructure",domain:"Analytics",priority:"med",v2:"new",bucket:"def",note:""},
+  {id:49,name:"Research Data Export & Open API",domain:"Analytics",priority:"med",v2:"new",bucket:"def",note:""}
+];
+
+let features = FEATURES.map(f=>({...f}));
+let currentFilter = "all";
+let nn=[], con=[], questions=[], risks=[], actions=[];
+
+const PRIORITIES = ["high","med","low"];
+const STATUSES   = ["full","part","new"];
+const P_LABEL = {high:"High",med:"Med",low:"Low"};
+const S_LABEL = {full:"Built",part:"Partial",new:"New"};
+
+function cyclePriority(id, e){
+  e.stopPropagation();
+  const f = features.find(x=>x.id===id);
+  f.priority = PRIORITIES[(PRIORITIES.indexOf(f.priority)+1) % 3];
+  renderFeatures();
+}
+function cycleStatus(id, e){
+  e.stopPropagation();
+  const f = features.find(x=>x.id===id);
+  f.v2 = STATUSES[(STATUSES.indexOf(f.v2)+1) % 3];
+  renderFeatures();
+}
+function cycleBucket(id){
+  const f = features.find(x=>x.id===id);
+  const order=['mvp','v2x','def'];
+  f.bucket = order[(order.indexOf(f.bucket)+1) % 3];
+  renderFeatures();
+}
+function setNote(id,val){features.find(x=>x.id===id).note=val;}
+
+function showTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const map=['agenda','northstar','features','risks','summary'];
+  document.querySelectorAll('.nav-btn')[map.indexOf(id)].classList.add('active');
+  if(id==='features') renderFeatures();
+  updateMetrics();
+}
+
+function filterDomain(v){currentFilter=v; renderFeatures();}
+
+function renderFeatures(){
+  ['mvp','v2x','def'].forEach(b=>document.getElementById('col-'+b).innerHTML='');
+  const vis = currentFilter==='all' ? features : features.filter(f=>f.domain===currentFilter);
+  ['mvp','v2x','def'].forEach(b=>{
+    const el = document.getElementById('col-'+b);
+    vis.filter(f=>f.bucket===b).forEach(f=>{
+      const card = document.createElement('div');
+      card.className = 'feat-card';
+      card.innerHTML = `
+        <div class="feat-name" title="Click to move to next column" onclick="cycleBucket(${f.id})">${f.name}</div>
+        <div class="feat-meta">
+          <span class="badge b-${f.priority}" title="Click to change priority" onclick="cyclePriority(${f.id},event)">${P_LABEL[f.priority]}</span>
+          <span class="badge b-${f.v2}" title="Click to change status" onclick="cycleStatus(${f.id},event)">${S_LABEL[f.v2]}</span>
+          <span class="domain-tag">${f.domain}</span>
+        </div>
+        <div class="feat-note"><input placeholder="Add note..." value="${f.note||''}" onclick="event.stopPropagation()" onchange="setNote(${f.id},this.value)"></div>
+      `;
+      el.appendChild(card);
+    });
+    document.getElementById('cnt-'+b).textContent = `(${features.filter(x=>x.bucket===b).length})`;
+  });
+  updateMetrics();
+}
+
+function updateMetrics(){
+  document.getElementById('m-mvp').textContent = features.filter(f=>f.bucket==='mvp').length;
+  document.getElementById('m-v2x').textContent = features.filter(f=>f.bucket==='v2x').length;
+  document.getElementById('m-def').textContent = features.filter(f=>f.bucket==='def').length;
+}
+
+function addTag(e,type){if(e.key==='Enter') addTagBtn(type);}
+function addTagBtn(type){
+  const input=document.getElementById(type+'-input');
+  const val=input.value.trim(); if(!val) return;
+  (type==='nn'?nn:con).push(val); input.value=''; renderTags();
+}
+function renderTags(){
+  ['nn','con'].forEach(t=>{
+    const arr=t==='nn'?nn:con;
+    document.getElementById(t+'-tags').innerHTML=arr.map((v,i)=>
+      `<span class="tag">${v} <span style="font-size:11px;color:var(--color-text-tertiary)" onclick="removeTag('${t}',${i})">×</span></span>`
+    ).join('');
+  });
+}
+function removeTag(type,i){(type==='nn'?nn:con).splice(i,1); renderTags();}
+
+function addItem(e,type){if(e.key==='Enter') addItemBtn(type);}
+function addItemBtn(type){
+  const input=document.getElementById(type+'-input');
+  const val=input.value.trim(); if(!val) return;
+  if(type==='q') questions.push(val);
+  else if(type==='r') risks.push(val);
+  else actions.push(val);
+  input.value=''; renderItems();
+}
+function renderItems(){
+  [['q',questions],['r',risks],['a',actions]].forEach(([t,arr])=>{
+    document.getElementById(t+'-list').innerHTML=arr.map((v,i)=>`
+      <div class="risk-item">
+        <span style="font-size:13px">${v}</span>
+        <span class="del" onclick="removeItem('${t}',${i})">remove</span>
+      </div>`).join('');
+  });
+}
+function removeItem(type,i){
+  if(type==='q') questions.splice(i,1);
+  else if(type==='r') risks.splice(i,1);
+  else actions.splice(i,1);
+  renderItems();
+}
+
+function generateSummary(){
+  const mvp=features.filter(f=>f.bucket==='mvp');
+  const v2x=features.filter(f=>f.bucket==='v2x');
+  const def=features.filter(f=>f.bucket==='def');
+  const sc=document.getElementById('success-crit').value;
+  let out=`VLX 2.0 / NYSOFA PILOT — REQUIREMENTS SESSION OUTPUT\n${'='.repeat(52)}\n\n`;
+  if(nn.length) out+=`NON-NEGOTIABLES\n${nn.map(v=>`  • ${v}`).join('\n')}\n\n`;
+  if(con.length) out+=`CONSTRAINTS\n${con.map(v=>`  • ${v}`).join('\n')}\n\n`;
+  if(sc) out+=`SUCCESS CRITERIA\n  ${sc}\n\n`;
+  out+=`MVP FEATURE SET (${mvp.length} features)\n`;
+  [...new Set(mvp.map(f=>f.domain))].forEach(d=>{
+    out+=`  ${d}\n`;
+    mvp.filter(f=>f.domain===d).forEach(f=>{
+      out+=`    — ${f.name}  [${P_LABEL[f.priority]} · ${S_LABEL[f.v2]}]${f.note?' — '+f.note:''}\n`;
+    });
+  });
+  out+=`\nVLX 2.X ROADMAP (${v2x.length} features)\n`;
+  [...new Set(v2x.map(f=>f.domain))].forEach(d=>{
+    out+=`  ${d}\n`;
+    v2x.filter(f=>f.domain===d).forEach(f=>{
+      out+=`    — ${f.name}  [${P_LABEL[f.priority]} · ${S_LABEL[f.v2]}]${f.note?' — '+f.note:''}\n`;
+    });
+  });
+  out+=`\nDEFERRED (${def.length} features)\n${def.map(f=>`  — ${f.name}  [${P_LABEL[f.priority]} · ${S_LABEL[f.v2]}]`).join('\n')}`;
+  if(questions.length) out+=`\n\nOPEN QUESTIONS\n${questions.map((v,i)=>`  ${i+1}. ${v}`).join('\n')}`;
+  if(risks.length) out+=`\n\nRISKS\n${risks.map((v,i)=>`  ${i+1}. ${v}`).join('\n')}`;
+  if(actions.length) out+=`\n\nACTION ITEMS\n${actions.map((v,i)=>`  ${i+1}. ${v}`).join('\n')}`;
+  document.getElementById('summary-out').textContent=out;
+}
+
+function copySummary(){
+  navigator.clipboard.writeText(document.getElementById('summary-out').textContent).catch(()=>{});
+}
+
+renderFeatures();
+updateMetrics();
+</script>
