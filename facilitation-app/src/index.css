@@ -481,12 +481,15 @@ select {
   margin-top: 6px;
 }
 
-.feat-note input {
+.feat-note-input {
   width: 100%;
   font-size: 12px;
   padding: 4px 7px;
   border: 1px solid #d1d5db;
   border-radius: 8px;
+  line-height: 1.4;
+  min-height: calc(1.4em * 2 + 10px);
+  resize: vertical;
 }
 
 .feat-bucket {

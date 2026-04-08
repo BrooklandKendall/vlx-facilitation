@@ -257,7 +257,9 @@ export function FeatureBoard({
                     </label>
                   </div>
                   <div className="feat-note">
-                    <input
+                    <textarea
+                      className="feat-note-input"
+                      rows={2}
                       defaultValue={feature.note}
                       placeholder="Add note..."
                       onBlur={(event) =>
