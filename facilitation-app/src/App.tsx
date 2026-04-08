@@ -18,6 +18,7 @@ import {
   subscribeSession,
   updateFeature,
   updateSessionField,
+  updateSessionPersonas,
   updateSessionItem,
 } from "./data/firestore";
 import {
@@ -73,6 +74,20 @@ function generateSummary(session: SessionDoc, features: Feature[], items: Sessio
   if (session.successCriteria.trim()) {
     lines.push("SUCCESS CRITERIA");
     lines.push(`  ${session.successCriteria.trim()}`);
+    lines.push("");
+  }
+  const personas = session.personas
+    .map((persona) => ({ label: persona.label.trim(), details: persona.details.trim() }))
+    .filter((persona) => persona.label.length > 0 || persona.details.length > 0);
+  if (personas.length > 0) {
+    lines.push("PERSONAS");
+    lines.push(
+      ...personas.map((persona, index) =>
+        persona.label.length > 0 && persona.details.length > 0
+          ? `  ${index + 1}. ${persona.label}: ${persona.details}`
+          : `  ${index + 1}. ${persona.label || persona.details}`
+      )
+    );
     lines.push("");
   }
   writeFeatureGroup("MVP FEATURE SET", mvp);
@@ -137,7 +152,7 @@ function buildPrdAgentInstructions() {
     requiredSections: [
       "Executive Summary",
       "Problem Statement",
-      "Personas and Roles",
+      "Personas",
       "Success Criteria",
       "Non-negotiables and Constraints",
       "Feature Scope (MVP, VLx 2.x, Deferred)",
@@ -149,7 +164,7 @@ function buildPrdAgentInstructions() {
     dataMapping: {
       sessions: "Use each sessions entry as a planning context. Prioritize sessions/default when present.",
       personaFields:
-        "Use personaCareRecipient, personaCareRecipientRoles, personaFamilyCaregiver, personaFamilyCaregiverRoles, personaCoordinator, and personaCoordinatorRoles in Persona and Role sections.",
+        "Use the personas array; each entry includes label and details. Treat first three labels as the core personas and include additional custom personas.",
       successCriteria: "Use successCriteria as measurable outcomes.",
       items:
         "Use items grouped by type: nonNegotiable, constraint, question, risk, action. Preserve wording and convert to polished report language.",
@@ -207,12 +222,11 @@ function buildDbExportPayload(sessions: ExportSession[]) {
 function App() {
   const [activeTab, setActiveTab] = useState<ActiveTab>("agenda");
   const [session, setSession] = useState<SessionDoc>({
-    personaCareRecipient: "",
-    personaCareRecipientRoles: "",
-    personaFamilyCaregiver: "",
-    personaFamilyCaregiverRoles: "",
-    personaCoordinator: "",
-    personaCoordinatorRoles: "",
+    personas: [
+      { label: "Care recipient", details: "" },
+      { label: "Family caregiver", details: "" },
+      { label: "EverHome coordinator", details: "" },
+    ],
     successCriteria: "",
   });
   const [features, setFeatures] = useState<Feature[]>([]);
@@ -284,6 +298,7 @@ function App() {
           nonNegotiables={itemsByType.nonNegotiable}
           constraints={itemsByType.constraint}
           onSaveSessionField={updateSessionField}
+          onSavePersonas={updateSessionPersonas}
           onAddTag={addSessionItem}
           onUpdateTag={updateSessionItem}
           onDeleteTag={deleteSessionItem}
@@ -302,6 +317,7 @@ function App() {
               domain,
               priority: "med",
               status: "new",
+              tshirt: "m",
               bucket,
               note: "",
             });

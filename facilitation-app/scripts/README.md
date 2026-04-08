@@ -28,6 +28,11 @@ Automation scripts for setup, deploy, and Firestore seed operations.
   - Deletes all Firestore collections
   - Runs `npm run seed:data` to repopulate `sessions/default`, `features`, and `items`
 
+- `backup.ps1` / `backup.sh`
+  - Selects Firebase project
+  - Creates a full Firestore JSON backup in `scripts/_backups`
+  - Non-destructive backup flow (no delete/seed)
+
 - `backup-firestore.mjs`
   - Exports all root collections and nested subcollections from Firestore
   - Writes timestamped JSON dump files into `scripts/_backups` as `bu-<date-string>.json`
@@ -48,6 +53,7 @@ PowerShell:
 .\scripts\setup.ps1
 .\scripts\deploy.ps1
 .\scripts\seed.ps1
+.\scripts\backup.ps1
 ```
 
 Bash:
@@ -56,6 +62,7 @@ Bash:
 ./scripts/setup.sh
 ./scripts/deploy.sh
 ./scripts/seed.sh
+./scripts/backup.sh
 ```
 
 Direct npm targets:
@@ -64,6 +71,7 @@ Direct npm targets:
 npm run deploy
 npm run deploy:hosting
 npm run deploy:rules
+npm run backup:data
 npm run seed:data
 npm run seed:reset
 ```
@@ -72,4 +80,5 @@ npm run seed:reset
 
 - `seed.ps1`, `seed.sh`, and `npm run seed:reset` are destructive and wipe existing Firestore collections before reseeding.
 - `seed.ps1` and `seed.sh` now create a full JSON dump before wiping data.
+- `backup.ps1`, `backup.sh`, and `npm run backup:data` are non-destructive backup-only paths.
 - Verify the selected Firebase project before running seed commands in shared environments.

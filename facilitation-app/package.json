@@ -11,6 +11,7 @@
     "deploy": "npm run build && firebase deploy",
     "deploy:hosting": "npm run build && firebase deploy --only hosting",
     "deploy:rules": "firebase deploy --only firestore:rules",
+    "backup:data": "node ./scripts/backup-firestore.mjs",
     "seed:data": "node ./scripts/seed-data.mjs",
     "seed:reset": "firebase firestore:delete --all-collections --force && npm run seed:data"
   },

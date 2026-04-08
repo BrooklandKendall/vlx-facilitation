@@ -16,7 +16,9 @@ import type {
   FeatureBucket,
   FeaturePriority,
   FeatureStatus,
+  FeatureTshirt,
   ItemType,
+  Persona,
   SessionDoc,
   SessionField,
   SessionItem,
@@ -25,14 +27,10 @@ import type {
 const SESSION_PATH = doc(db, "sessions", "default");
 const FEATURES_PATH = collection(db, "sessions", "default", "features");
 const ITEMS_PATH = collection(db, "sessions", "default", "items");
+const CORE_PERSONA_LABELS = ["Care recipient", "Family caregiver", "EverHome coordinator"] as const;
 
 const DEFAULT_SESSION: SessionDoc = {
-  personaCareRecipient: "",
-  personaCareRecipientRoles: "",
-  personaFamilyCaregiver: "",
-  personaFamilyCaregiverRoles: "",
-  personaCoordinator: "",
-  personaCoordinatorRoles: "",
+  personas: CORE_PERSONA_LABELS.map((label) => ({ label, details: "" })),
   successCriteria: "",
 };
 
@@ -44,6 +42,11 @@ const coercePriority = (value: unknown): FeaturePriority => {
 const coerceStatus = (value: unknown): FeatureStatus => {
   if (value === "full" || value === "part" || value === "new") return value;
   return "new";
+};
+
+const coerceTshirt = (value: unknown): FeatureTshirt => {
+  if (value === "xs" || value === "s" || value === "m" || value === "l" || value === "xl") return value;
+  return "m";
 };
 
 const coerceBucket = (value: unknown): FeatureBucket => {
@@ -60,15 +63,50 @@ export async function ensureSessionDoc() {
 
 export function subscribeSession(onData: (session: SessionDoc) => void) {
   return onSnapshot(SESSION_PATH, (snapshot) => {
-    const data = snapshot.data() as Partial<SessionDoc> | undefined;
+    const data = (snapshot.data() ?? {}) as Record<string, unknown>;
+    let personas: Persona[] | null = null;
+    if (
+      Array.isArray(data.personas) &&
+      data.personas.every(
+        (entry) =>
+          typeof entry === "object" &&
+          entry !== null &&
+          typeof (entry as { label?: unknown }).label === "string" &&
+          typeof (entry as { details?: unknown }).details === "string"
+      )
+    ) {
+      personas = data.personas as Persona[];
+    } else if (Array.isArray(data.personas) && data.personas.every((entry) => typeof entry === "string")) {
+      personas = (data.personas as string[]).map((details, index) => ({
+        label: CORE_PERSONA_LABELS[index] ?? `Persona ${index + 1}`,
+        details,
+      }));
+    } else {
+      personas = [
+        {
+          label: CORE_PERSONA_LABELS[0],
+          details: typeof data.personaCareRecipient === "string" ? data.personaCareRecipient : "",
+        },
+        {
+          label: CORE_PERSONA_LABELS[1],
+          details: typeof data.personaFamilyCaregiver === "string" ? data.personaFamilyCaregiver : "",
+        },
+        {
+          label: CORE_PERSONA_LABELS[2],
+          details: typeof data.personaCoordinator === "string" ? data.personaCoordinator : "",
+        },
+      ];
+    }
+    while (personas.length < CORE_PERSONA_LABELS.length) {
+      const idx = personas.length;
+      personas.push({ label: CORE_PERSONA_LABELS[idx], details: "" });
+    }
+    personas = personas.map((persona, index) =>
+      index < CORE_PERSONA_LABELS.length ? { ...persona, label: CORE_PERSONA_LABELS[index] } : persona
+    );
     onData({
-      personaCareRecipient: data?.personaCareRecipient ?? "",
-      personaCareRecipientRoles: data?.personaCareRecipientRoles ?? "",
-      personaFamilyCaregiver: data?.personaFamilyCaregiver ?? "",
-      personaFamilyCaregiverRoles: data?.personaFamilyCaregiverRoles ?? "",
-      personaCoordinator: data?.personaCoordinator ?? "",
-      personaCoordinatorRoles: data?.personaCoordinatorRoles ?? "",
-      successCriteria: data?.successCriteria ?? "",
+      personas,
+      successCriteria: typeof data.successCriteria === "string" ? data.successCriteria : "",
     });
   });
 }
@@ -84,6 +122,7 @@ export function subscribeFeatures(onData: (features: Feature[]) => void) {
         domain: typeof data.domain === "string" ? data.domain : "Unknown",
         priority: coercePriority(data.priority),
         status: coerceStatus(data.status),
+        tshirt: coerceTshirt(data.tshirt),
         bucket: coerceBucket(data.bucket),
         note: typeof data.note === "string" ? data.note : "",
       };
@@ -113,6 +152,10 @@ export async function updateSessionField(field: SessionField, value: string) {
   await updateDoc(SESSION_PATH, { [field]: value });
 }
 
+export async function updateSessionPersonas(personas: Persona[]) {
+  await updateDoc(SESSION_PATH, { personas });
+}
+
 export async function addSessionItem(type: ItemType, text: string) {
   await addDoc(ITEMS_PATH, { type, text });
 }
@@ -127,7 +170,9 @@ export async function deleteSessionItem(id: string) {
 
 export async function updateFeature(
   featureId: string,
-  patch: Partial<Pick<Feature, "name" | "bucket" | "priority" | "status" | "domain" | "note">>
+  patch: Partial<
+    Pick<Feature, "name" | "bucket" | "priority" | "status" | "domain" | "note" | "tshirt">
+  >
 ) {
   await updateDoc(doc(FEATURES_PATH, featureId), patch);
 }

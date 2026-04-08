@@ -4,6 +4,7 @@ import { FEATURE_DOMAINS, P_LABEL, S_LABEL, type Feature } from "../../types";
 
 const PRIORITIES: Array<Feature["priority"]> = ["high", "med", "low"];
 const STATUSES: Array<Feature["status"]> = ["full", "part", "new"];
+const TSHIRT_SIZES: Array<Feature["tshirt"]> = ["xs", "s", "m", "l", "xl"];
 const BUCKET_OPTIONS: Array<{ value: Feature["bucket"]; label: string }> = [
   { value: "mvp", label: "MVP" },
   { value: "v2x", label: "VLx 2.x" },
@@ -21,7 +22,7 @@ interface FeatureBoardProps {
     patch: Partial<
       Pick<
         Feature,
-        "name" | "bucket" | "priority" | "status" | "domain" | "note"
+        "name" | "bucket" | "priority" | "status" | "domain" | "note" | "tshirt"
       >
     >
   ) => Promise<void>;
@@ -214,6 +215,24 @@ export function FeatureBoard({
                         {PRIORITIES.map((priority) => (
                           <option key={priority} value={priority}>
                             {P_LABEL[priority]}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label className="feat-field">
+                      <span>T-shirt</span>
+                      <select
+                        className="feat-select"
+                        value={feature.tshirt}
+                        onChange={(event) =>
+                          void onUpdateFeature(feature.id, {
+                            tshirt: event.target.value as Feature["tshirt"],
+                          })
+                        }
+                      >
+                        {TSHIRT_SIZES.map((size) => (
+                          <option key={size} value={size}>
+                            {size.toUpperCase()}
                           </option>
                         ))}
                       </select>

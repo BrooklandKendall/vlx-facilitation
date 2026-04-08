@@ -35,7 +35,7 @@ export function AgendaTab({ counts }: AgendaTabProps) {
         <div className="agenda-item">
           <span className="time">0:25 - 0:50</span>
           <span>
-            <strong>Personas</strong> - Care recipient, family caregiver, EverHome coordinator
+            <strong>Personas</strong> - Define core personas and add others as needed
           </span>
         </div>
         <div className="agenda-item">
@@ -69,7 +69,7 @@ export function AgendaTab({ counts }: AgendaTabProps) {
         <div>- Confirmed MVP feature set</div>
         <div>- VLx 2.x roadmap feature list</div>
         <div>- Documented constraints, budget ceiling, and non-negotiables</div>
-        <div>- Persona definitions (3 primary personas + roles)</div>
+        <div>- Persona definitions (core + additional personas)</div>
         <div>- Prioritized open questions and risk register</div>
         <div className="secondary">{"->"} Feeds into: PRD, user stories, architecture plan</div>
       </div>
