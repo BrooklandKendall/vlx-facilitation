@@ -66,10 +66,10 @@ export function AgendaTab({ counts }: AgendaTabProps) {
 
       <div className="section-hdr">Session outputs</div>
       <div className="static-list">
-        <div>- Confirmed MVP feature set for NYSOFA pilot</div>
+        <div>- Confirmed MVP feature set</div>
         <div>- VLx 2.x roadmap feature list</div>
         <div>- Documented constraints, budget ceiling, and non-negotiables</div>
-        <div>- Persona definitions (3 primary roles)</div>
+        <div>- Persona definitions (3 primary personas + roles)</div>
         <div>- Prioritized open questions and risk register</div>
         <div className="secondary">{"->"} Feeds into: PRD, user stories, architecture plan</div>
       </div>

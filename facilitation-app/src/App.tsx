@@ -57,7 +57,7 @@ function generateSummary(session: SessionDoc, features: Feature[], items: Sessio
     lines.push("");
   };
 
-  lines.push("VLX 2.0 / NYSOFA PILOT - REQUIREMENTS SESSION OUTPUT");
+  lines.push("VLX 2.0 - REQUIREMENTS SESSION OUTPUT");
   lines.push("=".repeat(52));
   lines.push("");
   if (byType("nonNegotiable").length > 0) {
@@ -124,12 +124,95 @@ async function fetchSessionsDump(): Promise<ExportSession[]> {
   return out;
 }
 
+function buildPrdAgentInstructions() {
+  return {
+    objective:
+      "Use the included Firestore dump to generate a Product Requirements Document (PRD) and deliver it as a PDF report.",
+    output: {
+      format: "PDF",
+      documentType: "Product Requirements Document",
+      language: "English",
+      tone: "Concise, implementation-ready, and executive-readable",
+    },
+    requiredSections: [
+      "Executive Summary",
+      "Problem Statement",
+      "Personas and Roles",
+      "Success Criteria",
+      "Non-negotiables and Constraints",
+      "Feature Scope (MVP, VLx 2.x, Deferred)",
+      "Open Questions",
+      "Risks and Mitigations",
+      "Action Items and Owners",
+      "Release Readiness Recommendations",
+    ],
+    dataMapping: {
+      sessions: "Use each sessions entry as a planning context. Prioritize sessions/default when present.",
+      personaFields:
+        "Use personaCareRecipient, personaCareRecipientRoles, personaFamilyCaregiver, personaFamilyCaregiverRoles, personaCoordinator, and personaCoordinatorRoles in Persona and Role sections.",
+      successCriteria: "Use successCriteria as measurable outcomes.",
+      items:
+        "Use items grouped by type: nonNegotiable, constraint, question, risk, action. Preserve wording and convert to polished report language.",
+      features:
+        "Group features by bucket (mvp, v2x, def), then domain, and include priority/status signal in scope and roadmap sections.",
+    },
+    formattingGuidelines: [
+      "Use clear section headings and concise bullet points.",
+      "Call out assumptions when source data is incomplete.",
+      "Do not invent metrics; infer only from provided data.",
+      "Include a final one-page implementation checklist in the PDF appendix.",
+    ],
+  };
+}
+
+function buildPrdAgentGuidanceText() {
+  const instructions = buildPrdAgentInstructions();
+
+  return [
+    "VLX PRD AI GUIDANCE",
+    "===================",
+    "",
+    `Objective: ${instructions.objective}`,
+    "",
+    "Output Requirements",
+    `- Format: ${instructions.output.format}`,
+    `- Document Type: ${instructions.output.documentType}`,
+    `- Language: ${instructions.output.language}`,
+    `- Tone: ${instructions.output.tone}`,
+    "",
+    "Required Sections",
+    ...instructions.requiredSections.map((section) => `- ${section}`),
+    "",
+    "Source Data Mapping",
+    `- Sessions: ${instructions.dataMapping.sessions}`,
+    `- Persona Fields: ${instructions.dataMapping.personaFields}`,
+    `- Success Criteria: ${instructions.dataMapping.successCriteria}`,
+    `- Items: ${instructions.dataMapping.items}`,
+    `- Features: ${instructions.dataMapping.features}`,
+    "",
+    "Formatting Guidance",
+    ...instructions.formattingGuidelines.map((guideline) => `- ${guideline}`),
+    "",
+  ].join("\n");
+}
+
+function buildDbExportPayload(sessions: ExportSession[]) {
+  return {
+    exportedAt: new Date().toISOString(),
+    source: "facilitation-app",
+    collections: { sessions },
+  };
+}
+
 function App() {
   const [activeTab, setActiveTab] = useState<ActiveTab>("agenda");
   const [session, setSession] = useState<SessionDoc>({
     personaCareRecipient: "",
+    personaCareRecipientRoles: "",
     personaFamilyCaregiver: "",
+    personaFamilyCaregiverRoles: "",
     personaCoordinator: "",
+    personaCoordinatorRoles: "",
     successCriteria: "",
   });
   const [features, setFeatures] = useState<Feature[]>([]);
@@ -211,7 +294,7 @@ function App() {
           features={features}
           filterDomain={featureDomain}
           onFilterDomain={setFeatureDomain}
-          onAddFeature={async (name, domain) => {
+          onAddFeature={async (name, domain, bucket) => {
             const nextSeedId = features.reduce((max, feature) => Math.max(max, feature.seedId), 0) + 1;
             await addFeature({
               seedId: nextSeedId,
@@ -219,7 +302,7 @@ function App() {
               domain,
               priority: "med",
               status: "new",
-              bucket: "def",
+              bucket,
               note: "",
             });
           }}
@@ -249,14 +332,25 @@ function App() {
             }
           }}
           onExport={onExport}
+          onExportPrdJson={async () => {
+            try {
+              const sessions = await fetchSessionsDump();
+              const payload = buildDbExportPayload(sessions);
+              downloadTextFile(
+                "prd-source-db.json",
+                `${JSON.stringify(payload, null, 2)}\n`,
+                "application/json;charset=utf-8"
+              );
+              downloadTextFile("prd-ai-guidance.txt", buildPrdAgentGuidanceText());
+            } catch (caught) {
+              const message = caught instanceof Error ? caught.message : "Unknown export error";
+              setError(`PRD package export failed: ${message}`);
+            }
+          }}
           onExportDbJson={async () => {
             try {
               const sessions = await fetchSessionsDump();
-              const payload = {
-                exportedAt: new Date().toISOString(),
-                source: "facilitation-app",
-                collections: { sessions },
-              };
+              const payload = buildDbExportPayload(sessions);
               downloadTextFile(
                 "firestore-dump.json",
                 `${JSON.stringify(payload, null, 2)}\n`,

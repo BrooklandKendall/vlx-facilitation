@@ -36,7 +36,15 @@ function EditableTagList({ items, onUpdate, onDelete }: EditableTagListProps) {
               }
             }}
           />
-          <button type="button" className="del" onClick={() => void onDelete(item.id)}>
+          <button
+            type="button"
+            className="del"
+            onClick={() => {
+              const confirmed = window.confirm(`Remove item "${item.text}"?`);
+              if (!confirmed) return;
+              void onDelete(item.id);
+            }}
+          >
             remove
           </button>
         </div>
@@ -71,7 +79,7 @@ export function NorthStarTab({
       <div className="section-hdr">North star & constraints</div>
 
       <div className="star-box">
-        <div className="mini-hdr">Non-negotiables for MVP pilot</div>
+        <div className="mini-hdr">Non-negotiables for MVP</div>
         <EditableTagList items={nonNegotiables} onUpdate={onUpdateTag} onDelete={onDeleteTag} />
         <div className="row">
           <input
@@ -124,6 +132,13 @@ export function NorthStarTab({
             onBlur={(event) => void onSaveSessionField("personaCareRecipient", event.target.value)}
             placeholder="Age range, conditions, tech comfort, connectivity, device type..."
           />
+          <div className="mini-hdr top-gap">Roles</div>
+          <textarea
+            className="textarea"
+            defaultValue={session.personaCareRecipientRoles}
+            onBlur={(event) => void onSaveSessionField("personaCareRecipientRoles", event.target.value)}
+            placeholder="Primary responsibilities, decisions they own, and support they need..."
+          />
         </div>
         <div>
           <div className="mini-hdr">Family caregiver</div>
@@ -132,6 +147,13 @@ export function NorthStarTab({
             defaultValue={session.personaFamilyCaregiver}
             onBlur={(event) => void onSaveSessionField("personaFamilyCaregiver", event.target.value)}
             placeholder="Relationship, availability, tech literacy, primary concerns..."
+          />
+          <div className="mini-hdr top-gap">Roles</div>
+          <textarea
+            className="textarea"
+            defaultValue={session.personaFamilyCaregiverRoles}
+            onBlur={(event) => void onSaveSessionField("personaFamilyCaregiverRoles", event.target.value)}
+            placeholder="Daily responsibilities, coordination tasks, and escalation duties..."
           />
         </div>
         <div>
@@ -142,16 +164,23 @@ export function NorthStarTab({
             onBlur={(event) => void onSaveSessionField("personaCoordinator", event.target.value)}
             placeholder="Caseload size, workflow, reporting requirements, escalation triggers..."
           />
+          <div className="mini-hdr top-gap">Roles</div>
+          <textarea
+            className="textarea"
+            defaultValue={session.personaCoordinatorRoles}
+            onBlur={(event) => void onSaveSessionField("personaCoordinatorRoles", event.target.value)}
+            placeholder="Program oversight, reporting ownership, and intervention workflows..."
+          />
         </div>
       </div>
 
       <div className="top-gap">
-        <div className="mini-hdr">Success criteria for the NYSOFA pilot</div>
+        <div className="mini-hdr">Success criteria for MVP</div>
         <textarea
           className="textarea large"
           defaultValue={session.successCriteria}
           onBlur={(event) => void onSaveSessionField("successCriteria", event.target.value)}
-          placeholder="e.g. >=85% scan success rate, >=60% weekly active usage, NYSOFA reporting capability..."
+          placeholder="e.g. >=85% scan success rate, >=60% weekly active usage, required reporting capability..."
         />
       </div>
     </div>

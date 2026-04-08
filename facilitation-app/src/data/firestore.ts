@@ -28,8 +28,11 @@ const ITEMS_PATH = collection(db, "sessions", "default", "items");
 
 const DEFAULT_SESSION: SessionDoc = {
   personaCareRecipient: "",
+  personaCareRecipientRoles: "",
   personaFamilyCaregiver: "",
+  personaFamilyCaregiverRoles: "",
   personaCoordinator: "",
+  personaCoordinatorRoles: "",
   successCriteria: "",
 };
 
@@ -60,8 +63,11 @@ export function subscribeSession(onData: (session: SessionDoc) => void) {
     const data = snapshot.data() as Partial<SessionDoc> | undefined;
     onData({
       personaCareRecipient: data?.personaCareRecipient ?? "",
+      personaCareRecipientRoles: data?.personaCareRecipientRoles ?? "",
       personaFamilyCaregiver: data?.personaFamilyCaregiver ?? "",
+      personaFamilyCaregiverRoles: data?.personaFamilyCaregiverRoles ?? "",
       personaCoordinator: data?.personaCoordinator ?? "",
+      personaCoordinatorRoles: data?.personaCoordinatorRoles ?? "",
       successCriteria: data?.successCriteria ?? "",
     });
   });

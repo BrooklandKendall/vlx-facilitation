@@ -3,6 +3,7 @@ interface SummaryTabProps {
   onGenerate: () => void;
   onCopy: () => void;
   onExport: () => void;
+  onExportPrdJson: () => void;
   onExportDbJson: () => void;
   onExportDbFirestore: () => void;
 }
@@ -12,6 +13,7 @@ export function SummaryTab({
   onGenerate,
   onCopy,
   onExport,
+  onExportPrdJson,
   onExportDbJson,
   onExportDbFirestore,
 }: SummaryTabProps) {
@@ -26,6 +28,9 @@ export function SummaryTab({
         </button>
         <button className="btn" type="button" onClick={onExport}>
           Export text file
+        </button>
+        <button className="btn" type="button" onClick={onExportPrdJson}>
+          Export PRD package files
         </button>
         <button className="btn" type="button" onClick={onExportDbJson}>
           Export DB JSON

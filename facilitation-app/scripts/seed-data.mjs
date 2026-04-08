@@ -57,19 +57,22 @@ const FEATURE_SEED = [
 
 const DEFAULT_SESSION = {
   personaCareRecipient: "",
+  personaCareRecipientRoles: "",
   personaFamilyCaregiver: "",
+  personaFamilyCaregiverRoles: "",
   personaCoordinator: "",
+  personaCoordinatorRoles: "",
   successCriteria: "",
 };
 
 const ITEM_SEED = [
-  { type: "nonNegotiable", text: "HIPAA-compliant handling of workshop and pilot data." },
+  { type: "nonNegotiable", text: "HIPAA-compliant handling of workshop data." },
   { type: "nonNegotiable", text: "Simple onboarding for low-tech users and caregivers." },
-  { type: "constraint", text: "Pilot scope and timeline must fit NYSOFA implementation windows." },
+  { type: "constraint", text: "MVP scope and timeline must fit implementation windows." },
   { type: "constraint", text: "Initial rollout should prioritize lowest operational overhead." },
-  { type: "question", text: "Which outcomes are mandatory for pilot success sign-off?" },
+  { type: "question", text: "Which outcomes are mandatory for MVP success sign-off?" },
   { type: "question", text: "Which integrations are required for day-one reporting?" },
-  { type: "risk", text: "Data quality and missing inputs could reduce confidence in pilot analytics." },
+  { type: "risk", text: "Data quality and missing inputs could reduce confidence in MVP analytics." },
   { type: "action", text: "Confirm final success metrics and owners before go-live." },
 ];
 

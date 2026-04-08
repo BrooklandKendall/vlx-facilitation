@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState } from 'react';
+
 import { FEATURE_DOMAINS, P_LABEL, S_LABEL, type Feature } from "../../types";
 
 const PRIORITIES: Array<Feature["priority"]> = ["high", "med", "low"];
 const STATUSES: Array<Feature["status"]> = ["full", "part", "new"];
 const BUCKET_OPTIONS: Array<{ value: Feature["bucket"]; label: string }> = [
-  { value: "mvp", label: "MVP / Pilot" },
+  { value: "mvp", label: "MVP" },
   { value: "v2x", label: "VLx 2.x" },
   { value: "def", label: "Deferred" },
 ];
@@ -13,11 +14,16 @@ interface FeatureBoardProps {
   features: Feature[];
   filterDomain: string;
   onFilterDomain: (domain: string) => void;
-  onAddFeature: (name: string, domain: string) => Promise<void>;
+  onAddFeature: (name: string, domain: string, bucket: Feature["bucket"]) => Promise<void>;
   onDeleteFeature: (featureId: string) => Promise<void>;
   onUpdateFeature: (
     featureId: string,
-    patch: Partial<Pick<Feature, "name" | "bucket" | "priority" | "status" | "domain" | "note">>
+    patch: Partial<
+      Pick<
+        Feature,
+        "name" | "bucket" | "priority" | "status" | "domain" | "note"
+      >
+    >
   ) => Promise<void>;
 }
 
@@ -30,9 +36,15 @@ export function FeatureBoard({
   onUpdateFeature,
 }: FeatureBoardProps) {
   const [newFeatureName, setNewFeatureName] = useState("");
-  const [newFeatureDomain, setNewFeatureDomain] = useState<string>(FEATURE_DOMAINS[0]);
-  const visible = filterDomain === "all" ? features : features.filter((feature) => feature.domain === filterDomain);
-  const sortedByTitle = [...visible].sort((left, right) => left.name.localeCompare(right.name));
+  const [newFeatureDomain, setNewFeatureDomain] = useState<string>("");
+  const [newFeatureBucket, setNewFeatureBucket] = useState<string>("");
+  const visible =
+    filterDomain === "all"
+      ? features
+      : features.filter((feature) => feature.domain === filterDomain);
+  const sortedByTitle = [...visible].sort((left, right) =>
+    left.name.localeCompare(right.name)
+  );
   const counts = {
     mvp: features.filter((feature) => feature.bucket === "mvp").length,
     v2x: features.filter((feature) => feature.bucket === "v2x").length,
@@ -40,16 +52,33 @@ export function FeatureBoard({
   };
   const submitNewFeature = async () => {
     const cleaned = newFeatureName.trim();
-    if (!cleaned) return;
-    await onAddFeature(cleaned, newFeatureDomain);
+    if (!cleaned) {
+      window.alert("Feature name is required.");
+      return;
+    }
+    if (!newFeatureDomain.trim()) {
+      window.alert("Feature domain is required.");
+      return;
+    }
+    if (!newFeatureBucket.trim()) {
+      window.alert("Feature bucket is required.");
+      return;
+    }
+    await onAddFeature(cleaned, newFeatureDomain, newFeatureBucket as Feature["bucket"]);
     setNewFeatureName("");
+    setNewFeatureDomain("");
+    setNewFeatureBucket("");
   };
 
   return (
     <div>
       <div className="ctrl-row">
         <label htmlFor="domain-filter">Filter:</label>
-        <select id="domain-filter" value={filterDomain} onChange={(event) => onFilterDomain(event.target.value)}>
+        <select
+          id="domain-filter"
+          value={filterDomain}
+          onChange={(event) => onFilterDomain(event.target.value)}
+        >
           <option value="all">All domains</option>
           {FEATURE_DOMAINS.map((domain) => (
             <option key={domain} value={domain}>
@@ -57,7 +86,13 @@ export function FeatureBoard({
             </option>
           ))}
         </select>
+      </div>
+
+      <div className="ctrl-row">
+        <span>Add feature:</span>
+        <label htmlFor="new-feature-name">Feature name:</label>
         <input
+          id="new-feature-name"
           className="input"
           value={newFeatureName}
           onChange={(event) => setNewFeatureName(event.target.value)}
@@ -69,36 +104,44 @@ export function FeatureBoard({
           }}
           placeholder="New feature name..."
         />
-        <select value={newFeatureDomain} onChange={(event) => setNewFeatureDomain(event.target.value)}>
+        <label htmlFor="new-feature-domain">Domain:</label>
+        <select
+          id="new-feature-domain"
+          value={newFeatureDomain}
+          onChange={(event) => setNewFeatureDomain(event.target.value)}
+        >
+          <option value="">Select Domain</option>
           {FEATURE_DOMAINS.map((domain) => (
             <option key={domain} value={domain}>
               {domain}
             </option>
           ))}
         </select>
-        <button type="button" className="btn" onClick={() => void submitNewFeature()}>
+        <label htmlFor="new-feature-bucket">Bucket:</label>
+        <select
+          id="new-feature-bucket"
+          value={newFeatureBucket}
+          onChange={(event) => setNewFeatureBucket(event.target.value)}
+        >
+          <option value="">Select Bucket</option>
+          {BUCKET_OPTIONS.map((bucket) => (
+            <option key={bucket.value} value={bucket.value}>
+              {bucket.label}
+            </option>
+          ))}
+        </select>
+        <button
+          type="button"
+          className="btn"
+          onClick={() => void submitNewFeature()}
+        >
           Add feature
         </button>
       </div>
 
-      <div className="legend">
-        <span className="legend-title">Card controls:</span>
-        <span className="legend-item">Bucket controls column placement</span>
-        <span className="legend-item">
-          <span className="badge b-high">High</span>
-          <span className="badge b-med">Med</span>
-          <span className="badge b-low">Low</span> priority
-        </span>
-        <span className="legend-item">
-          <span className="badge b-full">Built</span>
-          <span className="badge b-part">Partial</span>
-          <span className="badge b-new">New</span> status
-        </span>
-      </div>
-
       <div className="col-wrap">
         {[
-          { key: "mvp", title: "MVP / Pilot", color: "mvp", count: counts.mvp },
+          { key: "mvp", title: "MVP", color: "mvp", count: counts.mvp },
           { key: "v2x", title: "VLx 2.x", color: "v2x", count: counts.v2x },
           { key: "def", title: "Deferred", color: "def", count: counts.def },
         ].map((column) => (
@@ -126,7 +169,15 @@ export function FeatureBoard({
                         }
                       }}
                     />
-                    <button type="button" className="del" onClick={() => void onDeleteFeature(feature.id)}>
+                    <button
+                      type="button"
+                      className="del"
+                      onClick={() => {
+                        const confirmed = window.confirm(`Remove feature "${feature.name}"?`);
+                        if (!confirmed) return;
+                        void onDeleteFeature(feature.id);
+                      }}
+                    >
                       remove
                     </button>
                   </div>
@@ -136,7 +187,11 @@ export function FeatureBoard({
                       <select
                         className="feat-select"
                         value={feature.domain}
-                        onChange={(event) => void onUpdateFeature(feature.id, { domain: event.target.value })}
+                        onChange={(event) =>
+                          void onUpdateFeature(feature.id, {
+                            domain: event.target.value,
+                          })
+                        }
                       >
                         {FEATURE_DOMAINS.map((domain) => (
                           <option key={domain} value={domain}>
@@ -151,7 +206,9 @@ export function FeatureBoard({
                         className={`feat-select priority-${feature.priority}`}
                         value={feature.priority}
                         onChange={(event) =>
-                          void onUpdateFeature(feature.id, { priority: event.target.value as Feature["priority"] })
+                          void onUpdateFeature(feature.id, {
+                            priority: event.target.value as Feature["priority"],
+                          })
                         }
                       >
                         {PRIORITIES.map((priority) => (
@@ -167,7 +224,9 @@ export function FeatureBoard({
                         className={`feat-select status-${feature.status}`}
                         value={feature.status}
                         onChange={(event) =>
-                          void onUpdateFeature(feature.id, { status: event.target.value as Feature["status"] })
+                          void onUpdateFeature(feature.id, {
+                            status: event.target.value as Feature["status"],
+                          })
                         }
                       >
                         {STATUSES.map((status) => (
@@ -182,19 +241,33 @@ export function FeatureBoard({
                     <input
                       defaultValue={feature.note}
                       placeholder="Add note..."
-                      onBlur={(event) => void onUpdateFeature(feature.id, { note: event.target.value })}
+                      onBlur={(event) =>
+                        void onUpdateFeature(feature.id, {
+                          note: event.target.value,
+                        })
+                      }
                     />
                   </div>
                   <div className="feat-bucket">
                     <label className="feat-field">
-                      <div className="bucket-toggle" role="group" aria-label={`Set bucket for ${feature.name}`}>
+                      <div
+                        className="bucket-toggle"
+                        role="group"
+                        aria-label={`Set bucket for ${feature.name}`}
+                      >
                         {BUCKET_OPTIONS.map((bucket) => (
                           <button
                             key={bucket.value}
                             type="button"
-                            className={`bucket-btn bucket-${bucket.value} ${feature.bucket === bucket.value ? "active" : ""}`}
+                            className={`bucket-btn bucket-${bucket.value} ${
+                              feature.bucket === bucket.value ? "active" : ""
+                            }`}
                             aria-pressed={feature.bucket === bucket.value}
-                            onClick={() => void onUpdateFeature(feature.id, { bucket: bucket.value })}
+                            onClick={() =>
+                              void onUpdateFeature(feature.id, {
+                                bucket: bucket.value,
+                              })
+                            }
                           >
                             {bucket.label}
                           </button>

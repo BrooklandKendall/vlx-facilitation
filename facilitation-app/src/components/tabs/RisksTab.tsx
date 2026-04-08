@@ -49,7 +49,15 @@ function ListEditor({ title, placeholder, items, onAdd, onUpdate, onDelete }: Li
                 }
               }}
             />
-            <button type="button" className="del" onClick={() => void onDelete(item.id)}>
+            <button
+              type="button"
+              className="del"
+              onClick={() => {
+                const confirmed = window.confirm(`Remove item "${item.text}"?`);
+                if (!confirmed) return;
+                void onDelete(item.id);
+              }}
+            >
               remove
             </button>
           </div>
