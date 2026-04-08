@@ -164,7 +164,7 @@ function buildPrdAgentInstructions() {
     dataMapping: {
       sessions: "Use each sessions entry as a planning context. Prioritize sessions/default when present.",
       personaFields:
-        "Use the personas array; each entry includes label and details. Treat first three labels as the core personas and include additional custom personas.",
+        "Use the personas array; each entry includes label and details. Do not assume fixed persona names or ordering.",
       successCriteria: "Use successCriteria as measurable outcomes.",
       items:
         "Use items grouped by type: nonNegotiable, constraint, question, risk, action. Preserve wording and convert to polished report language.",

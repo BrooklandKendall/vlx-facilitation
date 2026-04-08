@@ -64,7 +64,6 @@ export function NorthStarTab({
   onUpdateTag,
   onDeleteTag,
 }: NorthStarTabProps) {
-  const CORE_LABELS = ["Care recipient", "Family caregiver", "EverHome coordinator"] as const;
   const [nnInput, setNnInput] = useState("");
   const [conInput, setConInput] = useState("");
 
@@ -77,18 +76,7 @@ export function NorthStarTab({
     else setConInput("");
   };
 
-  const personas =
-    session.personas.length >= CORE_LABELS.length
-      ? session.personas.map((persona, index) =>
-          index < CORE_LABELS.length ? { ...persona, label: CORE_LABELS[index] } : persona
-        )
-      : [
-          ...CORE_LABELS.map((label, index) => ({
-            label,
-            details: session.personas[index]?.details ?? "",
-          })),
-          ...session.personas.slice(CORE_LABELS.length),
-        ];
+  const personas = session.personas;
 
   const savePersonaDetails = async (index: number, details: string) => {
     const next = [...personas];
@@ -97,7 +85,6 @@ export function NorthStarTab({
   };
 
   const savePersonaLabel = async (index: number, label: string) => {
-    if (index < CORE_LABELS.length) return;
     const next = [...personas];
     next[index] = { ...next[index], label: label.trim() };
     await onSavePersonas(next);
@@ -108,7 +95,6 @@ export function NorthStarTab({
   };
 
   const removePersona = async (index: number) => {
-    if (index < CORE_LABELS.length) return;
     const confirmed = window.confirm("Remove this persona?");
     if (!confirmed) return;
     await onSavePersonas(personas.filter((_, current) => current !== index));
@@ -167,26 +153,21 @@ export function NorthStarTab({
         {personas.map((persona, index) => (
           <div key={`persona-${index}`} className="top-gap">
             <div className="row">
-              <div className="mini-hdr">
-                {index < CORE_LABELS.length ? CORE_LABELS[index] : `Persona ${index + 1}`}
-              </div>
+              <div className="mini-hdr">{`Persona ${index + 1}`}</div>
               <button
                 type="button"
                 className="del"
                 onClick={() => void removePersona(index)}
-                disabled={index < CORE_LABELS.length}
               >
                 remove
               </button>
             </div>
-            {index >= CORE_LABELS.length ? (
-              <input
-                className="input"
-                defaultValue={persona.label}
-                onBlur={(event) => void savePersonaLabel(index, event.target.value)}
-                placeholder="Persona label (required)"
-              />
-            ) : null}
+            <input
+              className="input"
+              defaultValue={persona.label}
+              onBlur={(event) => void savePersonaLabel(index, event.target.value)}
+              placeholder="Persona title (required)"
+            />
             <textarea
               className="textarea"
               defaultValue={persona.details}

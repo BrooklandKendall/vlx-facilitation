@@ -27,10 +27,10 @@ import type {
 const SESSION_PATH = doc(db, "sessions", "default");
 const FEATURES_PATH = collection(db, "sessions", "default", "features");
 const ITEMS_PATH = collection(db, "sessions", "default", "items");
-const CORE_PERSONA_LABELS = ["Care recipient", "Family caregiver", "EverHome coordinator"] as const;
+const DEFAULT_PERSONA_LABELS = ["Care recipient", "Family caregiver", "EverHome coordinator"] as const;
 
 const DEFAULT_SESSION: SessionDoc = {
-  personas: CORE_PERSONA_LABELS.map((label) => ({ label, details: "" })),
+  personas: DEFAULT_PERSONA_LABELS.map((label) => ({ label, details: "" })),
   successCriteria: "",
 };
 
@@ -78,32 +78,25 @@ export function subscribeSession(onData: (session: SessionDoc) => void) {
       personas = data.personas as Persona[];
     } else if (Array.isArray(data.personas) && data.personas.every((entry) => typeof entry === "string")) {
       personas = (data.personas as string[]).map((details, index) => ({
-        label: CORE_PERSONA_LABELS[index] ?? `Persona ${index + 1}`,
+        label: DEFAULT_PERSONA_LABELS[index] ?? `Persona ${index + 1}`,
         details,
       }));
     } else {
       personas = [
         {
-          label: CORE_PERSONA_LABELS[0],
+          label: DEFAULT_PERSONA_LABELS[0],
           details: typeof data.personaCareRecipient === "string" ? data.personaCareRecipient : "",
         },
         {
-          label: CORE_PERSONA_LABELS[1],
+          label: DEFAULT_PERSONA_LABELS[1],
           details: typeof data.personaFamilyCaregiver === "string" ? data.personaFamilyCaregiver : "",
         },
         {
-          label: CORE_PERSONA_LABELS[2],
+          label: DEFAULT_PERSONA_LABELS[2],
           details: typeof data.personaCoordinator === "string" ? data.personaCoordinator : "",
         },
       ];
     }
-    while (personas.length < CORE_PERSONA_LABELS.length) {
-      const idx = personas.length;
-      personas.push({ label: CORE_PERSONA_LABELS[idx], details: "" });
-    }
-    personas = personas.map((persona, index) =>
-      index < CORE_PERSONA_LABELS.length ? { ...persona, label: CORE_PERSONA_LABELS[index] } : persona
-    );
     onData({
       personas,
       successCriteria: typeof data.successCriteria === "string" ? data.successCriteria : "",
