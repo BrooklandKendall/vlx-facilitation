@@ -16,6 +16,7 @@ export interface Persona {
 export interface SessionDoc {
   personas: Persona[];
   successCriteria: string;
+  epics: string[];
 }
 
 export interface FeatureSeed {
@@ -27,6 +28,7 @@ export interface FeatureSeed {
   tshirt: FeatureTshirt;
   bucket: FeatureBucket;
   note: string;
+  epic: string[];
 }
 
 export interface Feature extends FeatureSeed {

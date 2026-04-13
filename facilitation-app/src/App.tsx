@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { AppShell, type ActiveTab } from "./components/AppShell";
 import { AgendaTab } from "./components/tabs/AgendaTab";
+import { EpicsTab } from "./components/tabs/EpicsTab";
 import { FeatureBoard } from "./components/tabs/FeatureBoard";
 import { NorthStarTab } from "./components/tabs/NorthStarTab";
 import { RisksTab } from "./components/tabs/RisksTab";
@@ -18,6 +19,7 @@ import {
   subscribeSession,
   updateFeature,
   updateSessionField,
+  updateSessionEpics,
   updateSessionPersonas,
   updateSessionItem,
 } from "./data/firestore";
@@ -52,7 +54,9 @@ function generateSummary(session: SessionDoc, features: Feature[], items: Sessio
       lines.push(`  ${domain}`);
       for (const feature of list.filter((entry) => entry.domain === domain)) {
         const detail = `    - ${feature.name} [${P_LABEL[feature.priority]} / ${S_LABEL[feature.status]}]`;
-        lines.push(feature.note ? `${detail} - ${feature.note}` : detail);
+        const epicText = feature.epic.length > 0 ? ` [Epics: ${feature.epic.join(", ")}]` : "";
+        const content = `${detail}${epicText}`;
+        lines.push(feature.note ? `${content} - ${feature.note}` : content);
       }
     }
     lines.push("");
@@ -228,6 +232,7 @@ function App() {
       { label: "EverHome coordinator", details: "" },
     ],
     successCriteria: "",
+    epics: [],
   });
   const [features, setFeatures] = useState<Feature[]>([]);
   const [items, setItems] = useState<SessionItem[]>([]);
@@ -308,6 +313,7 @@ function App() {
         <FeatureBoard
           features={features}
           filterDomain={featureDomain}
+          epicOptions={session.epics}
           onFilterDomain={setFeatureDomain}
           onAddFeature={async (name, domain, bucket) => {
             const nextSeedId = features.reduce((max, feature) => Math.max(max, feature.seedId), 0) + 1;
@@ -320,9 +326,18 @@ function App() {
               tshirt: "m",
               bucket,
               note: "",
+              epic: [],
             });
           }}
           onDeleteFeature={deleteFeature}
+          onUpdateFeature={updateFeature}
+        />
+      ) : null}
+      {activeTab === "epics" ? (
+        <EpicsTab
+          epicOptions={session.epics}
+          features={features}
+          onSaveEpicOptions={updateSessionEpics}
           onUpdateFeature={updateFeature}
         />
       ) : null}

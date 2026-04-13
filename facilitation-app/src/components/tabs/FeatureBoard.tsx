@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from "react";
 
 import { FEATURE_DOMAINS, P_LABEL, S_LABEL, type Feature } from "../../types";
 
@@ -14,6 +14,7 @@ const BUCKET_OPTIONS: Array<{ value: Feature["bucket"]; label: string }> = [
 interface FeatureBoardProps {
   features: Feature[];
   filterDomain: string;
+  epicOptions: string[];
   onFilterDomain: (domain: string) => void;
   onAddFeature: (name: string, domain: string, bucket: Feature["bucket"]) => Promise<void>;
   onDeleteFeature: (featureId: string) => Promise<void>;
@@ -22,7 +23,7 @@ interface FeatureBoardProps {
     patch: Partial<
       Pick<
         Feature,
-        "name" | "bucket" | "priority" | "status" | "domain" | "note" | "tshirt"
+        "name" | "bucket" | "priority" | "status" | "domain" | "note" | "tshirt" | "epic"
       >
     >
   ) => Promise<void>;
@@ -31,6 +32,7 @@ interface FeatureBoardProps {
 export function FeatureBoard({
   features,
   filterDomain,
+  epicOptions,
   onFilterDomain,
   onAddFeature,
   onDeleteFeature,
@@ -39,10 +41,23 @@ export function FeatureBoard({
   const [newFeatureName, setNewFeatureName] = useState("");
   const [newFeatureDomain, setNewFeatureDomain] = useState<string>("");
   const [newFeatureBucket, setNewFeatureBucket] = useState<string>("");
-  const visible =
-    filterDomain === "all"
-      ? features
-      : features.filter((feature) => feature.domain === filterDomain);
+  const [selectedEpics, setSelectedEpics] = useState<string[]>([]);
+  const [showUnassigned, setShowUnassigned] = useState(false);
+  const allEpicsForFilter = useMemo(
+    () =>
+      [...new Set([...epicOptions, ...features.flatMap((feature) => feature.epic)])].sort((left, right) =>
+        left.localeCompare(right)
+      ),
+    [epicOptions, features]
+  );
+  const visible = features.filter((feature) => {
+    const domainMatch = filterDomain === "all" || feature.domain === filterDomain;
+    const noEpicFilters = selectedEpics.length === 0 && !showUnassigned;
+    const epicMatch = noEpicFilters
+      || (showUnassigned && feature.epic.length === 0)
+      || feature.epic.some((epic) => selectedEpics.includes(epic));
+    return domainMatch && epicMatch;
+  });
   const sortedByTitle = [...visible].sort((left, right) =>
     left.name.localeCompare(right.name)
   );
@@ -70,6 +85,18 @@ export function FeatureBoard({
     setNewFeatureDomain("");
     setNewFeatureBucket("");
   };
+  const toggleFeatureEpic = async (feature: Feature, epic: string) => {
+    const hasEpic = feature.epic.includes(epic);
+    const nextEpics = hasEpic
+      ? feature.epic.filter((entry) => entry !== epic)
+      : [...feature.epic, epic];
+    await onUpdateFeature(feature.id, { epic: nextEpics });
+  };
+  const toggleEpicFilter = (epic: string) => {
+    setSelectedEpics((current) =>
+      current.includes(epic) ? current.filter((entry) => entry !== epic) : [...current, epic]
+    );
+  };
 
   return (
     <div>
@@ -87,6 +114,40 @@ export function FeatureBoard({
             </option>
           ))}
         </select>
+      </div>
+      <div className="ctrl-row">
+        <span>Filter epics:</span>
+        <label>
+          <input
+            type="checkbox"
+            checked={showUnassigned}
+            onChange={() => setShowUnassigned((v) => !v)}
+          />
+          No epic
+        </label>
+        {allEpicsForFilter.length === 0 ? (
+          <span>No epics available</span>
+        ) : (
+          allEpicsForFilter.map((epic) => (
+            <label key={epic}>
+              <input
+                type="checkbox"
+                checked={selectedEpics.includes(epic)}
+                onChange={() => toggleEpicFilter(epic)}
+              />
+              {epic}
+            </label>
+          ))
+        )}
+        {selectedEpics.length > 0 || showUnassigned ? (
+          <button
+            type="button"
+            className="btn"
+            onClick={() => { setSelectedEpics([]); setShowUnassigned(false); }}
+          >
+            Clear epic filters
+          </button>
+        ) : null}
       </div>
 
       <div className="ctrl-row">
@@ -139,7 +200,6 @@ export function FeatureBoard({
           Add feature
         </button>
       </div>
-
       <div className="col-wrap">
         {[
           { key: "mvp", title: "MVP", color: "mvp", count: counts.mvp },
@@ -268,6 +328,27 @@ export function FeatureBoard({
                         })
                       }
                     />
+                  </div>
+                  <div className="feat-note">
+                    <div className="feat-field">
+                      <span>Epics</span>
+                    </div>
+                    {epicOptions.length === 0 ? (
+                      <span>Create epics above to assign them.</span>
+                    ) : (
+                      <div className="ctrl-row">
+                        {[...epicOptions].sort((a, b) => a.localeCompare(b)).map((epic) => (
+                          <label key={`${feature.id}-${epic}`}>
+                            <input
+                              type="checkbox"
+                              checked={feature.epic.includes(epic)}
+                              onChange={() => void toggleFeatureEpic(feature, epic)}
+                            />
+                            {epic}
+                          </label>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   <div className="feat-bucket">
                     <label className="feat-field">

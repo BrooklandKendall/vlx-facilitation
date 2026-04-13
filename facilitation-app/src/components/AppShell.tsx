@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react";
 
-export type ActiveTab = "agenda" | "northstar" | "features" | "risks" | "summary";
+export type ActiveTab = "agenda" | "northstar" | "features" | "epics" | "risks" | "summary";
 
 interface AppShellProps extends PropsWithChildren {
   activeTab: ActiveTab;
@@ -11,6 +11,7 @@ const tabs: Array<{ id: ActiveTab; label: string }> = [
   { id: "agenda", label: "Agenda" },
   { id: "northstar", label: "North star" },
   { id: "features", label: "Feature sort" },
+  { id: "epics", label: "Epics" },
   { id: "risks", label: "Open questions" },
   { id: "summary", label: "Session output" },
 ];

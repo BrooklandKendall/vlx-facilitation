@@ -32,6 +32,15 @@ const DEFAULT_PERSONA_LABELS = ["Care recipient", "Family caregiver", "EverHome 
 const DEFAULT_SESSION: SessionDoc = {
   personas: DEFAULT_PERSONA_LABELS.map((label) => ({ label, details: "" })),
   successCriteria: "",
+  epics: [],
+};
+
+const coerceStringList = (value: unknown): string[] => {
+  if (!Array.isArray(value)) return [];
+  return value
+    .filter((entry): entry is string => typeof entry === "string")
+    .map((entry) => entry.trim())
+    .filter((entry, index, all) => entry.length > 0 && all.indexOf(entry) === index);
 };
 
 const coercePriority = (value: unknown): FeaturePriority => {
@@ -100,6 +109,7 @@ export function subscribeSession(onData: (session: SessionDoc) => void) {
     onData({
       personas,
       successCriteria: typeof data.successCriteria === "string" ? data.successCriteria : "",
+      epics: coerceStringList(data.epics),
     });
   });
 }
@@ -118,6 +128,7 @@ export function subscribeFeatures(onData: (features: Feature[]) => void) {
         tshirt: coerceTshirt(data.tshirt),
         bucket: coerceBucket(data.bucket),
         note: typeof data.note === "string" ? data.note : "",
+        epic: coerceStringList(data.epic),
       };
     });
     onData(rows);
@@ -145,6 +156,10 @@ export async function updateSessionField(field: SessionField, value: string) {
   await updateDoc(SESSION_PATH, { [field]: value });
 }
 
+export async function updateSessionEpics(epics: string[]) {
+  await updateDoc(SESSION_PATH, { epics });
+}
+
 export async function updateSessionPersonas(personas: Persona[]) {
   await updateDoc(SESSION_PATH, { personas });
 }
@@ -164,7 +179,7 @@ export async function deleteSessionItem(id: string) {
 export async function updateFeature(
   featureId: string,
   patch: Partial<
-    Pick<Feature, "name" | "bucket" | "priority" | "status" | "domain" | "note" | "tshirt">
+    Pick<Feature, "name" | "bucket" | "priority" | "status" | "domain" | "note" | "tshirt" | "epic">
   >
 ) {
   await updateDoc(doc(FEATURES_PATH, featureId), patch);

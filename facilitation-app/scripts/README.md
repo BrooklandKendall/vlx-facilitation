@@ -40,7 +40,8 @@ Automation scripts for setup, deploy, and Firestore seed operations.
 
 - `seed-data.mjs`
   - Node script called by `npm run seed:data`
-  - Writes canonical seed data into Firestore
+  - Writes seed data from `../firestore-dump-20260413_1757.json` into Firestore
+  - Optional override with `SEED_DUMP_PATH=/absolute/path/to/dump.json`
   - Uses `FIREBASE_PROJECT_ID` env var (defaults to `vivalynx-tasks`)
 
 ## Usage

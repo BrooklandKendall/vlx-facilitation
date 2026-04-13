@@ -133,6 +133,8 @@ Local commands (recommended):
 
 - `npm run seed:local`
   - Seeds emulator data only (`FIRESTORE_EMULATOR_HOST=127.0.0.1:8080`).
+  - Default seed source: `../firestore-dump-20260413_1757.json`.
+  - Override seed source with `SEED_DUMP_PATH=/absolute/path/to/dump.json`.
 - `npm run seed:reset`
   - Emulator-only destructive reset, then local reseed.
 - `npm run backup:local`
