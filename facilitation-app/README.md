@@ -6,25 +6,34 @@ Running at: `https://vivalynx-tasks.web.app`
 
 ## What the app does
 
-- Runs a shared realtime workshop board with five tabs: Agenda, North star, Feature sort, Risks/questions, and Session output.
+- Runs a shared realtime workshop board with five tabs: Agenda, North star, Feature sort, Open questions, and Session output.
 - Stores workshop data in Firestore under `sessions/default`.
 - Seeds a canonical feature list plus a default session document.
-- Generates a plain-text session summary that can be copied or exported.
+- Generates a plain-text session summary that can be copied or exported as a text file, a PRD package (DB JSON + AI guidance file), a raw DB JSON dump, or a Firestore-nested-format JSON.
 
 ## Data model
 
 - `sessions/default`
-  - Persona fields and success criteria.
+  - `personas`: array of `{ label, details }` objects (defaults: Care recipient, Family caregiver, EverHome coordinator).
+  - `successCriteria`: free-text success criteria string.
 - `sessions/default/features`
-  - Seeded feature cards used in the feature sorting workflow.
+  - Feature cards: `seedId`, `name`, `domain`, `bucket` (mvp | v2x | def), `priority` (high | med | low), `status` (full | part | new), `tshirt` (xs | s | m | l | xl), `note`.
 - `sessions/default/items`
-  - Non-negotiables, constraints, questions, risks, and actions.
+  - Tagged items by `type`: nonNegotiable, constraint, question, risk, action. Each has a `text` field.
+
+## Working directory
+
+All commands in this document must be run from the `facilitation-app/` directory unless noted otherwise. `npm run` commands require `package.json` in the current directory; the Firebase CLI requires `firebase.json`; and helper script paths like `.\scripts\setup.ps1` are relative to that same root.
+
+```
+cd facilitation-app
+```
 
 ## Prerequisites
 
 - Node.js and npm
 - Firebase CLI: `npm install -g firebase-tools`
-- Java JDK 11+ (required for Firestore emulator)
+- Java JDK 21+ (required for Firestore emulator)
 - Google Cloud CLI only if you plan to run cloud Admin SDK scripts: [cloud.google.com/sdk](https://cloud.google.com/sdk)
 - Authenticated cloud access (only for cloud operations):
   - `firebase login`
@@ -33,16 +42,21 @@ Running at: `https://vivalynx-tasks.web.app`
 
 ## Local development
 
+> Run all commands from `facilitation-app/`.
+
 1. Install dependencies:
    - `npm install`
 2. Copy the sample env file:
    - PowerShell: `Copy-Item .env.example .env`
    - Bash: `cp .env.example .env`
 3. Populate `.env` with your Firebase web app config values.
-4. Start the Firestore emulator:
+4. _Leave the existing terminal running and open a new terminal_ and start the Firestore emulator:
    - `npm run emulators`
-5. Start the app against the emulator:
-   - `npm run dev:local`
+5. Seed local Firestore data (run once after emulator starts, then whenever you need a clean dataset):
+   - `npm run seed:local`
+   - Optional full reset + reseed: `npm run seed:reset`
+6. _Leave the new terminal running and return the first terminal_ and start the app:
+   - `npm run dev`
 
 The app reads these variables from `.env`:
 
@@ -52,15 +66,18 @@ The app reads these variables from `.env`:
 - `VITE_FIREBASE_STORAGE_BUCKET`
 - `VITE_FIREBASE_MESSAGING_SENDER_ID`
 - `VITE_FIREBASE_APP_ID`
-- `VITE_USE_EMULATOR` (set to `true` for local emulator usage)
+- `VITE_USE_EMULATOR` — set to `true` in `.env` to connect to the local emulator. With this set, `npm run dev` and `npm run dev:local` are equivalent.
 
 Emulator notes:
 
 - Firestore emulator runs at `127.0.0.1:8080`.
 - Emulator UI runs at `127.0.0.1:4000`.
 - Emulator data persists in `./emulator-data` via import/export flags.
+- `npm run seed:local` writes the canonical workshop data to the local emulator only.
 
 ## Firebase project setup
+
+> Run all commands from `facilitation-app/`.
 
 This repo is currently configured around the Firebase project id `vivalynx-tasks` in `.firebaserc` and the helper scripts. If you use a different Firebase project, update `.firebaserc` and the `PROJECT_ID` value in the scripts under `scripts/`.
 
@@ -85,6 +102,8 @@ After setup:
 
 ## Deploy
 
+> Run all commands from `facilitation-app/`.
+
 Available npm scripts:
 
 - `npm run build` builds the production bundle.
@@ -102,6 +121,8 @@ Helper scripts:
 The deploy scripts run `npm ci`, `npm run lint`, `npm run build`, and `firebase deploy`.
 
 ## Seed data
+
+> Run all commands from `facilitation-app/`.
 
 Default safety posture:
 
@@ -139,20 +160,27 @@ Direct `npm run seed:data`:
   - `REQUIRE_RECENT_BACKUP=true`
   - a recent backup marker exists at `scripts/_backups/.last-cloud-backup.json`
 
-Helper scripts:
+Seed helper scripts:
 
 - PowerShell: `.\scripts\seed.ps1`
 - Bash: `./scripts/seed.sh`
 
 These wrappers target cloud workflows and inherit the same environment guard requirements.
 
+Backup helper scripts:
+
+- PowerShell: `.\scripts\backup.ps1`
+- Bash: `./scripts/backup.sh`
+
 ## Recommended workflow
+
+> Run all commands from `facilitation-app/`.
 
 Local-first workflow:
 
 1. `npm install`
 2. `npm run emulators`
-3. `npm run dev:local`
+3. `npm run dev`
 4. `npm run seed:local` (or `npm run seed:reset` for full local reset)
 
 Cloud workflow (intentional only):
