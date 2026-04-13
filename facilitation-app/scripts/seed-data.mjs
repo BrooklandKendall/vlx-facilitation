@@ -1,7 +1,18 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { initializeApp, applicationDefault } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 
 const projectId = process.env.FIREBASE_PROJECT_ID || "vivalynx-tasks";
+const emulatorHost = process.env.FIRESTORE_EMULATOR_HOST;
+const cloudWritesAllowed = process.env.ALLOW_CLOUD_FIRESTORE_WRITE === "true";
+const confirmFirestoreProject = process.env.CONFIRM_FIRESTORE_PROJECT;
+const requireRecentBackup = process.env.REQUIRE_RECENT_BACKUP === "true";
+const backupMaxAgeMs = Number(process.env.BACKUP_MAX_AGE_MS || 15 * 60 * 1000);
+const scriptDir = path.dirname(fileURLToPath(import.meta.url));
+const backupDir = process.env.FIREBASE_BACKUP_DIR || path.join(scriptDir, "_backups");
+const backupMarkerPath = path.join(backupDir, ".last-cloud-backup.json");
 
 const FEATURE_SEED = [
   { seedId: 1, name: "Multi-Device App Platform", domain: "Platform", priority: "high", status: "full", bucket: "mvp", note: "" },
@@ -75,8 +86,67 @@ const ITEM_SEED = [
   { type: "action", text: "Confirm final success metrics and owners before go-live." },
 ];
 
+async function assertCloudSeedAllowed() {
+  if (emulatorHost) {
+    return;
+  }
+
+  if (!cloudWritesAllowed) {
+    throw new Error(
+      "Cloud seed is blocked. Set ALLOW_CLOUD_FIRESTORE_WRITE=true or use FIRESTORE_EMULATOR_HOST for local seeding."
+    );
+  }
+
+  if (confirmFirestoreProject !== projectId) {
+    throw new Error(
+      `Cloud seed blocked. CONFIRM_FIRESTORE_PROJECT must equal '${projectId}'.`
+    );
+  }
+
+  if (!requireRecentBackup) {
+    throw new Error(
+      "Cloud seed blocked. Set REQUIRE_RECENT_BACKUP=true and run the backup-then-seed cloud wrapper command."
+    );
+  }
+
+  let marker;
+  try {
+    marker = JSON.parse(await readFile(backupMarkerPath, "utf8"));
+  } catch {
+    throw new Error(
+      `Cloud seed blocked. Missing backup marker at ${backupMarkerPath}. Run cloud backup first.`
+    );
+  }
+
+  if (marker?.projectId !== projectId) {
+    throw new Error(
+      `Cloud seed blocked. Latest backup marker is for '${marker?.projectId ?? "unknown"}', expected '${projectId}'.`
+    );
+  }
+
+  const backedUpAtMs = Date.parse(marker?.completedAt ?? "");
+  if (!Number.isFinite(backedUpAtMs)) {
+    throw new Error("Cloud seed blocked. Backup marker timestamp is invalid.");
+  }
+
+  const backupAgeMs = Date.now() - backedUpAtMs;
+  if (backupAgeMs > backupMaxAgeMs) {
+    throw new Error(
+      `Cloud seed blocked. Latest backup is too old (${Math.round(
+        backupAgeMs / 1000
+      )}s > ${Math.round(backupMaxAgeMs / 1000)}s).`
+    );
+  }
+}
+
 async function main() {
-  initializeApp({ credential: applicationDefault(), projectId });
+  await assertCloudSeedAllowed();
+
+  if (emulatorHost) {
+    initializeApp({ projectId });
+  } else {
+    initializeApp({ credential: applicationDefault(), projectId });
+  }
   const db = getFirestore();
   db.settings({ ignoreUndefinedProperties: true });
 
@@ -97,6 +167,8 @@ async function main() {
 main().catch((error) => {
   console.error("Seed failed.");
   console.error(error?.message ?? error);
-  console.error("If this is an auth issue, run: gcloud auth application-default login");
+  if (!emulatorHost) {
+    console.error("If this is an auth issue, run: gcloud auth application-default login");
+  }
   process.exit(1);
 });

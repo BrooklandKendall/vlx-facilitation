@@ -24,8 +24,9 @@ Running at: `https://vivalynx-tasks.web.app`
 
 - Node.js and npm
 - Firebase CLI: `npm install -g firebase-tools`
-- Google Cloud CLI if you plan to use the setup scripts: [cloud.google.com/sdk](https://cloud.google.com/sdk)
-- Authenticated local access:
+- Java JDK 11+ (required for Firestore emulator)
+- Google Cloud CLI only if you plan to run cloud Admin SDK scripts: [cloud.google.com/sdk](https://cloud.google.com/sdk)
+- Authenticated cloud access (only for cloud operations):
   - `firebase login`
   - `gcloud auth login`
   - `gcloud auth application-default login`
@@ -38,8 +39,10 @@ Running at: `https://vivalynx-tasks.web.app`
    - PowerShell: `Copy-Item .env.example .env`
    - Bash: `cp .env.example .env`
 3. Populate `.env` with your Firebase web app config values.
-4. Start the dev server:
-   - `npm run dev`
+4. Start the Firestore emulator:
+   - `npm run emulators`
+5. Start the app against the emulator:
+   - `npm run dev:local`
 
 The app reads these variables from `.env`:
 
@@ -49,6 +52,13 @@ The app reads these variables from `.env`:
 - `VITE_FIREBASE_STORAGE_BUCKET`
 - `VITE_FIREBASE_MESSAGING_SENDER_ID`
 - `VITE_FIREBASE_APP_ID`
+- `VITE_USE_EMULATOR` (set to `true` for local emulator usage)
+
+Emulator notes:
+
+- Firestore emulator runs at `127.0.0.1:8080`.
+- Emulator UI runs at `127.0.0.1:4000`.
+- Emulator data persists in `./emulator-data` via import/export flags.
 
 ## Firebase project setup
 
@@ -82,6 +92,7 @@ Available npm scripts:
 - `npm run deploy` builds and runs `firebase deploy`.
 - `npm run deploy:hosting` builds and deploys Hosting only.
 - `npm run deploy:rules` deploys Firestore rules only.
+- `npm run emulators` starts Firestore emulator with persisted data.
 
 Helper scripts:
 
@@ -92,33 +103,65 @@ The deploy scripts run `npm ci`, `npm run lint`, `npm run build`, and `firebase 
 
 ## Seed data
 
-Available seed commands:
+Default safety posture:
 
-- `npm run seed:data`
-  - Writes `sessions/default`, seeded `features`, and seeded `items` (non-negotiables, constraints, open questions, risks, actions).
-  - Requires Google application default credentials.
+- Cloud backup/seed/reset is blocked unless explicit guard env vars are set.
+- Local emulator commands do not require cloud credentials.
+
+Local commands (recommended):
+
+- `npm run seed:local`
+  - Seeds emulator data only (`FIRESTORE_EMULATOR_HOST=127.0.0.1:8080`).
 - `npm run seed:reset`
-  - Deletes all Firestore collections, then reseeds data.
+  - Emulator-only destructive reset, then local reseed.
+- `npm run backup:local`
+  - Exports emulator data to `scripts/_backups`.
+
+Cloud commands (explicit opt-in):
+
+- `npm run backup:data`
+  - Cloud backup only when both are set:
+    - `ALLOW_CLOUD_FIRESTORE_WRITE=true`
+    - `CONFIRM_FIRESTORE_PROJECT=vivalynx-tasks` (or matching target project)
+- `npm run seed:cloud`
+  - Runs backup first, then cloud seed.
+  - Also requires `REQUIRE_RECENT_BACKUP=true` (set by the script itself).
+- `npm run seed:reset:cloud`
+  - Runs backup, deletes all cloud collections, then reseeds.
+  - Requires the same cloud guard env vars.
+
+Direct `npm run seed:data`:
+
+- Seeds current Firestore target.
+- In cloud mode, it fails unless all safety checks pass:
+  - `ALLOW_CLOUD_FIRESTORE_WRITE=true`
+  - `CONFIRM_FIRESTORE_PROJECT` matches `FIREBASE_PROJECT_ID`
+  - `REQUIRE_RECENT_BACKUP=true`
+  - a recent backup marker exists at `scripts/_backups/.last-cloud-backup.json`
 
 Helper scripts:
 
 - PowerShell: `.\scripts\seed.ps1`
 - Bash: `./scripts/seed.sh`
 
-The seed scripts are destructive. They run:
-
-```txt
-firebase firestore:delete --all-collections --force
-```
-
-Then they reseed `sessions/default` and `sessions/default/features`.
-and `sessions/default/items`.
+These wrappers target cloud workflows and inherit the same environment guard requirements.
 
 ## Recommended workflow
 
-1. `.\scripts\setup.ps1` or `./scripts/setup.sh`
-2. `.\scripts\deploy.ps1` or `./scripts/deploy.sh`
-3. `.\scripts\seed.ps1` or `./scripts/seed.sh`
+Local-first workflow:
+
+1. `npm install`
+2. `npm run emulators`
+3. `npm run dev:local`
+4. `npm run seed:local` (or `npm run seed:reset` for full local reset)
+
+Cloud workflow (intentional only):
+
+1. Export required guards:
+   - `ALLOW_CLOUD_FIRESTORE_WRITE=true`
+   - `CONFIRM_FIRESTORE_PROJECT=vivalynx-tasks` (or your target project)
+2. `npm run backup:data`
+3. `npm run seed:cloud` (or `npm run seed:reset:cloud` for destructive reset)
 
 ## Firestore rules
 

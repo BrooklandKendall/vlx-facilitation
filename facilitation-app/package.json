@@ -12,8 +12,14 @@
     "deploy:hosting": "npm run build && firebase deploy --only hosting",
     "deploy:rules": "firebase deploy --only firestore:rules",
     "backup:data": "node ./scripts/backup-firestore.mjs",
+    "backup:local": "cross-env FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 node ./scripts/backup-firestore.mjs",
     "seed:data": "node ./scripts/seed-data.mjs",
-    "seed:reset": "firebase firestore:delete --all-collections --force && npm run seed:data"
+    "seed:cloud": "npm run backup:data && cross-env REQUIRE_RECENT_BACKUP=true node ./scripts/seed-data.mjs",
+    "seed:reset": "cross-env FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 firebase firestore:delete --all-collections --force && npm run seed:local",
+    "seed:reset:cloud": "npm run backup:data && firebase firestore:delete --all-collections --force && cross-env REQUIRE_RECENT_BACKUP=true node ./scripts/seed-data.mjs",
+    "emulators": "firebase emulators:start --only firestore --import=./emulator-data --export-on-exit=./emulator-data",
+    "dev:local": "cross-env VITE_USE_EMULATOR=true npm run dev",
+    "seed:local": "cross-env FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 node ./scripts/seed-data.mjs"
   },
   "dependencies": {
     "firebase": "^12.11.0",
@@ -27,6 +33,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
+    "cross-env": "^10.1.0",
     "eslint": "^9.39.4",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
