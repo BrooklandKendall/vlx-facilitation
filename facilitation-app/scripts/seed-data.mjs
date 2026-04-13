@@ -56,12 +56,11 @@ const FEATURE_SEED = [
 ];
 
 const DEFAULT_SESSION = {
-  personaCareRecipient: "",
-  personaCareRecipientRoles: "",
-  personaFamilyCaregiver: "",
-  personaFamilyCaregiverRoles: "",
-  personaCoordinator: "",
-  personaCoordinatorRoles: "",
+  personas: [
+    { label: "Care recipient", details: "" },
+    { label: "Family caregiver", details: "" },
+    { label: "EverHome coordinator", details: "" },
+  ],
   successCriteria: "",
 };
 
