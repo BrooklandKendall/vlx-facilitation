@@ -1,0 +1,1610 @@
+{
+  "exportedAt": "2026-04-14T15:03:09.551Z",
+  "projectId": "vivalynx-tasks",
+  "target": "emulator",
+  "formatVersion": 1,
+  "collections": {
+    "sessions": {
+      "default": {
+        "personaCoordinator": "",
+        "epics": [
+          "Biometrics",
+          "Business Analytics",
+          "Calendaring",
+          "Compliance and Safety",
+          "General Platform"
+        ],
+        "personaCareRecipientRoles": "",
+        "successCriteria": "Clients convert after trial 80%\nDeliver trial value outcomes required by the agency\nAn in the market product that we can justify hiring a salesperson  ",
+        "personaFamilyCaregiver": "",
+        "personaCoordinatorRoles": "",
+        "personas": [
+          {
+            "label": "Care recipient",
+            "details": "Physically/mentally healthy enough for aging or care at home.\n60+ years old, 1 or more chronic conditions\nCan benefit from the use of an intervention tool like Vlx\nAt risk for social isolation\nliving alone or with a spouse in a home environment \nOne or more paid professionals are involved in the individual's care\nSome prior experience and comfort level with the use of technology\nLimited need for physical assistance  \n"
+          },
+          {
+            "label": "Family caregiver",
+            "details": "Adult child/spouse who has responsibility for aging parent and may still have children at home "
+          },
+          {
+            "label": "Care Coordinator",
+            "details": "A licensed or unlicensed professional who also has good technology, caregiving, and communications skills, and manages multiple care recipients "
+          },
+          {
+            "label": "Professional caregiver",
+            "details": "A licensed professional who gets paid to provide care for one or more care recipients and travels to the individual homes to provide care"
+          },
+          {
+            "details": "An individual aging senior that is responsible for directing their own care",
+            "label": "Self-Directed Care Recipient"
+          },
+          {
+            "details": "Responsible for structuring the care program and delivering value-based outcomes to a group of care recipients",
+            "label": "Agency or Association"
+          },
+          {
+            "details": "An entity that offers the VLx App as a covered component of their offerings.\n\nDisability Providers\nHome Health Agencies\nElder care Law Firms\nStrategic Partners\nSenior Housing\nCare Brokers\nCare Coordination Orgs\nPACE, LHCSA, CHHA\nGovernment Entities - NYSOFA\nHealth Care Provider\nHealth Insurance (Payer)\nWealth Management Firms\nIndividual\nLife Care Planning Law Firm\nEmployer Group\n",
+            "label": "Segment Customer"
+          }
+        ],
+        "personaFamilyCaregiverRoles": "",
+        "personaCareRecipient": "",
+        "__collections__": {
+          "features": {
+            "00AIPcBs7sfznjK6ERmJ": {
+              "seedId": 44,
+              "note": "The ability to gather User data while using the App to get feedback on features and how it is, or not meeting user needs.\n\nWhat is the process of incorporating the NPS protocols into the deployment of the App",
+              "epic": [
+                "Business Analytics"
+              ],
+              "name": "In-App Feedback & NPS System",
+              "priority": "med",
+              "bucket": "v2x",
+              "domain": "Analytics",
+              "status": "new"
+            },
+            "11g9Vp7UsuNlk4H0cQkx": {
+              "bucket": "mvp",
+              "domain": "Platform",
+              "status": "part",
+              "name": "Administrative Web Console",
+              "priority": "high",
+              "note": "Need to provide access for additional roles. Currently structured for high-level administration and the Life Care Coordinator level.",
+              "epic": [
+                "General Platform"
+              ],
+              "seedId": 2
+            },
+            "1AMprWcrC5woBftLtINh": {
+              "seedId": 13,
+              "name": "Environmental Sensors Integration",
+              "domain": "Safety",
+              "priority": "med",
+              "status": "part",
+              "bucket": "def",
+              "note": "These are sensor-type devices that will detect things like carbon monoxide and other environmental concerns\n\nOverlaps with many other features",
+              "epic": [
+                "Biometrics/Monitoring",
+                "Third-Party",
+                "Care Analytics",
+                "Care Mgt."
+              ],
+              "tshirt": "m"
+            },
+            "1cFnY80tucuQhGsgI1In": {
+              "domain": "AI",
+              "status": "new",
+              "bucket": "v2x",
+              "priority": "high",
+              "name": "Behavioral Nudge Engine",
+              "seedId": 17,
+              "note": "This is Wellness guidance driven, which is based on AI algorithms that identify areas of concern for individuals and \"nudges\" them toward better behavior."
+            },
+            "1gli6AaQwBDTLSRNSQn6": {
+              "seedId": 53,
+              "name": "NYSOFA Standards & Requirements",
+              "domain": "Platform",
+              "priority": "med",
+              "status": "new",
+              "tshirt": "m",
+              "bucket": "mvp",
+              "note": "The NYS requirements and standards related to the delivery of applications, related infrastructure, use of AI, and other features and programmatic areas.",
+              "epic": [
+                "Compliance/Safety"
+              ]
+            },
+            "3E2y1IpI6wsBMBswPEVh": {
+              "seedId": 38,
+              "name": "Daily Routine & ADL Tracking",
+              "domain": "Social",
+              "priority": "med",
+              "status": "part",
+              "tshirt": "l",
+              "bucket": "v2x",
+              "note": "We have components of this functionality, including tasks and reminders. We need to break the connections related to GrandCare dependencies",
+              "epic": [
+                "Calendaring",
+                "Messaging",
+                "Care Mgt."
+              ]
+            },
+            "3PaESHm3EM48p6MF7CWQ": {
+              "seedId": 19,
+              "note": "",
+              "priority": "low",
+              "name": "Multilingual & Cultural Adaptation",
+              "bucket": "def",
+              "status": "new",
+              "domain": "Platform"
+            },
+            "4ifkHMGR3A87nuRl8db1": {
+              "note": "",
+              "epic": [
+                "Business Analytics"
+              ],
+              "seedId": 43,
+              "name": "Feature Usage Analytics Dashboard",
+              "priority": "high",
+              "domain": "Analytics",
+              "status": "new",
+              "bucket": "mvp"
+            },
+            "4xvbQ79kfn4aos8emfBI": {
+              "seedId": 19,
+              "domain": "Platform",
+              "priority": "low",
+              "status": "new",
+              "bucket": "def",
+              "note": "",
+              "epic": [
+                "Gen. Platform"
+              ],
+              "name": "Multilingual (Localization) & Cultural Adaptation",
+              "tshirt": "l"
+            },
+            "5uUnmTJang9faapMo0uB": {
+              "seedId": 45,
+              "name": "Clinical Trial Cohort Management",
+              "domain": "Analytics",
+              "priority": "high",
+              "status": "new",
+              "bucket": "mvp",
+              "note": "Part of a larger program and related data collection, analytics process",
+              "epic": [
+                "Care Analytics"
+              ]
+            },
+            "6KDGQwe9Fr1Q03VcPonv": {
+              "seedId": 21,
+              "name": "Health Education Content Library",
+              "domain": "Wellness",
+              "priority": "med",
+              "status": "new",
+              "tshirt": "s",
+              "bucket": "mvp",
+              "note": "Access to Trualta and other online resources",
+              "epic": [
+                "Education/Resources",
+                "Third-Party"
+              ]
+            },
+            "6SAiEx8zyFO0nSBG7kSw": {
+              "seedId": 14,
+              "name": "911 & Emergency Services Integration",
+              "domain": "Safety",
+              "priority": "high",
+              "status": "full",
+              "bucket": "mvp",
+              "note": "Calling out to 911 during an emergency from within the VLx App",
+              "epic": [
+                "Compliance/Safety",
+                "Gen. Platform"
+              ],
+              "tshirt": "xs"
+            },
+            "6pEuBXBIlWt63F8Uk6wq": {
+              "name": "Family Caregiver App",
+              "priority": "high",
+              "domain": "Caregiver",
+              "status": "part",
+              "bucket": "mvp",
+              "seedId": 34,
+              "note": "This is the primary set of features and functionality that runs on top of the VLx platform infrastructure. ",
+              "epic": [
+                "General Platform"
+              ]
+            },
+            "7L6SD7RVr7nJg0PodGDb": {
+              "name": "eCommerce - In-App Subscriptions",
+              "priority": "med",
+              "bucket": "mvp",
+              "domain": "Platform",
+              "status": "new",
+              "seedId": 50,
+              "note": "1. eCommerce Integration; 2. In-app purchases (aka In-app subs); 3. Platform setup, Admin processes (e.g., subs price lists, etc.). Platform setup, administration of the related features.",
+              "tshirt": "xl"
+            },
+            "7PRb0EAfByZVuXMGaub4": {
+              "seedId": 34,
+              "domain": "Caregiver",
+              "status": "part",
+              "bucket": "mvp",
+              "epic": [
+                "Gen. Platform"
+              ],
+              "name": "Mobile App aka Family Caregiver App",
+              "note": "This is the primary set of features and functionality that runs on top of the VLx platform infrastructure.\n\nThis is primarily a catch all, unclear if it will continue to exist or be integrated into other features",
+              "priority": "high",
+              "tshirt": "s"
+            },
+            "7aDdfFuOXoPCGdZuHprG": {
+              "seedId": 14,
+              "epic": [
+                "Compliance and Safety"
+              ],
+              "note": "Calling out to 911 during an emergency from within the VLx App",
+              "priority": "high",
+              "name": "911 & Emergency Services Integration",
+              "bucket": "mvp",
+              "tshirt": "s",
+              "domain": "Safety",
+              "status": "full"
+            },
+            "7pgduSk9ebOAOxAmapZc": {
+              "seedId": 44,
+              "name": "In-App Feedback & NPS System",
+              "domain": "Analytics",
+              "priority": "med",
+              "status": "new",
+              "bucket": "v2x",
+              "note": "The ability to gather User data while using the App to get feedback on features and how it is, or not meeting user needs.\n\nWhat is the process of incorporating the NPS protocols into the deployment of the App",
+              "epic": [
+                "Bus. Analytics",
+                "Care Analytics",
+                "Gen. Platform"
+              ]
+            },
+            "7spoGyokYc72d3jiv6Ku": {
+              "seedId": 33,
+              "name": "Longitudinal Care Timeline",
+              "domain": "Care Coordination",
+              "priority": "med",
+              "status": "new",
+              "tshirt": "m",
+              "bucket": "v2x",
+              "epic": [
+                "Care Analytics",
+                "Biometrics/Monitoring",
+                "Bus. Analytics",
+                "Care Mgt."
+              ],
+              "note": "Data collection defined in other cards, this is for the engine/algorithm"
+            },
+            "9155wo4S9Qtsa7Kuthhs": {
+              "epic": [
+                "Compliance and Safety"
+              ],
+              "note": "Required for verifying caregiver visit, and used for payment purposes. Medicare and Medicaid requirements.",
+              "seedId": 30,
+              "priority": "high",
+              "name": "Caregiver Activity Logs (EVV)",
+              "bucket": "v2x",
+              "tshirt": "l",
+              "status": "new",
+              "domain": "Care Coordination"
+            },
+            "9olVIUCrRzNaIVZB1ENp": {
+              "name": "Health Risk Identification",
+              "priority": "high",
+              "bucket": "v2x",
+              "status": "new",
+              "domain": "AI",
+              "seedId": 16,
+              "note": "Part of MIA, and driven by data collection systems to enable the risk identification algorithms ",
+              "tshirt": "l"
+            },
+            "9yvYxWpPCmC8Ar5VnGW3": {
+              "seedId": 1,
+              "domain": "Platform",
+              "priority": "high",
+              "status": "part",
+              "tshirt": "l",
+              "bucket": "mvp",
+              "epic": [
+                "Gen. Platform",
+                "End-User Mgt."
+              ],
+              "name": "UI/UX Responsiveness and Device-Appropriateness",
+              "note": "Proper responsive design for the various viewport sizes of the individual device types and device families. WCAG/ADA should be a consideration and a complete UX/UI refresh.\n\nMobile App and Web Admin must be properly responsive for different devices.\n\nUI/UX must account for ADA and other compliance requirements\n\nMust have \"Senior Mode\" for large type, remove unnecessary clutter, etc."
+            },
+            "A6pko9eoXKO6DR5vl94R": {
+              "domain": "Care Coordination",
+              "status": "new",
+              "bucket": "v2x",
+              "name": "Longitudinal Care Timeline",
+              "priority": "med",
+              "tshirt": "m",
+              "seedId": 33,
+              "note": "This needs definition "
+            },
+            "AFEPyZyCN3rzK5xhggLC": {
+              "note": "Specified updates and enhancements based on the next set of requirements in a phased development path. Need to determine what is most important at this stage from a calendaring perspective, and what other parts of the app need to be connected to this feature.",
+              "epic": [
+                "Calendaring"
+              ],
+              "seedId": 29,
+              "domain": "Care Coordination",
+              "status": "part",
+              "bucket": "mvp",
+              "name": "To-Do List & Care Tasks",
+              "priority": "high"
+            },
+            "BIId8e5Mp3lWReU3YKqT": {
+              "seedId": 23,
+              "name": "Medication Tracking & Sharing",
+              "domain": "Medication",
+              "priority": "high",
+              "status": "part",
+              "bucket": "mvp",
+              "note": "Need a detailed definition of Medication Tracking & Sharing",
+              "epic": [
+                "Care Mgt.",
+                "Messaging",
+                "Calendaring"
+              ]
+            },
+            "BgHBlm3DSIPR0F3K6T2e": {
+              "bucket": "mvp",
+              "domain": "Communications",
+              "status": "part",
+              "priority": "med",
+              "name": "Content Sharing (Photos/Docs/Videos)",
+              "seedId": 26,
+              "note": "Existing bare MVP functionality to share PDFs by uploading in Web Admin. Final size depends on final requirements.\n\nAnyone in the family caregiving circle has permission to upload and download documents."
+            },
+            "BleOIlYBo2UV3qbkDa7W": {
+              "seedId": 50,
+              "name": "eCommerce - In-App Subscriptions",
+              "domain": "Platform",
+              "priority": "med",
+              "status": "new",
+              "tshirt": "xl",
+              "bucket": "mvp",
+              "note": "1. eCommerce Integration; 2. In-app purchases (aka In-app subs); 3. Platform setup, Admin processes (e.g., subs price lists, etc.). Platform setup, administration of the related features.",
+              "epic": [
+                "Gen. Platform",
+                "Third-Party",
+                "End-User Mgt."
+              ]
+            },
+            "BqBuoQSU50mDs1qObqUC": {
+              "seedId": 49,
+              "name": "Research Data Export & Open API",
+              "domain": "Analytics",
+              "priority": "med",
+              "status": "new",
+              "bucket": "def",
+              "epic": [
+                "Gen. Platform",
+                "Bus. Analytics",
+                "Care Analytics",
+                "Biometrics/Monitoring"
+              ],
+              "note": "Engine/Alorithm (data collection covered in other cards)"
+            },
+            "CQR6atqKJ23oquoj52m6": {
+              "seedId": 31,
+              "name": "Secure Document Vault",
+              "domain": "Care Coordination",
+              "status": "part",
+              "bucket": "def",
+              "epic": [
+                "End-User Content Mgt."
+              ],
+              "note": "A PW-based system for access to documents (TBD third party, security within our existing doc mgt)",
+              "priority": "low"
+            },
+            "Cu2Ol0E7Fn83Wj4fRS84": {
+              "tshirt": "l",
+              "seedId": 20,
+              "note": "This will touch everything and encompass a significant number of key areas across features as it will derive the data that drives the AI-enabled intelligence and algorithms that will define the proprietary scoring model.",
+              "name": "Proprietary Wellness Score",
+              "priority": "low",
+              "status": "new",
+              "domain": "Wellness",
+              "bucket": "v2x"
+            },
+            "DlrMNnXmbX0guT1PPekD": {
+              "bucket": "def",
+              "domain": "Analytics",
+              "status": "new",
+              "name": "A/B Testing Infrastructure",
+              "priority": "med",
+              "seedId": 48,
+              "note": "Systematic approach to testing the various features, needs to apply resources to an effort like this.",
+              "epic": [
+                "Business Analytics"
+              ]
+            },
+            "EwDZDA1Jiz6RJs1nqumf": {
+              "seedId": 56,
+              "domain": "Platform",
+              "priority": "med",
+              "tshirt": "m",
+              "bucket": "mvp",
+              "status": "part",
+              "note": "Foundational service for both security and business logging and metrics (related to Care Analysis/Metrics)",
+              "name": "Platform Metrics/Logging",
+              "epic": [
+                "Gen. Platform",
+                "Bus. Analytics",
+                "Care Analytics",
+                "Compliance/Safety"
+              ]
+            },
+            "Gz23kRo3biAi2pJHPFrd": {
+              "seedId": 35,
+              "note": "Trualta, etc. (service integration, sso?, without any functionality in-app)",
+              "name": "Caregiver Support Resources",
+              "priority": "med",
+              "bucket": "v2x",
+              "status": "new",
+              "domain": "Caregiver"
+            },
+            "HRF1kgoMxvI7P39UkyF3": {
+              "seedId": 6,
+              "domain": "Vitals",
+              "priority": "low",
+              "status": "new",
+              "tshirt": "l",
+              "bucket": "v2x",
+              "note": "Since it's the first device integration, this effectively means developing an entirely new service/feature on the platform. Lots of testing and learning for initial device discovery/setup. These would be vitals or biometric readings that are not derived from MIA or the device or process used for facial scanning.",
+              "epic": [
+                "Biometrics/Monitoring",
+                "Gen. Platform",
+                "Third-Party",
+                "Care Mgt."
+              ],
+              "name": "Connected Device Vitals - First Implementation"
+            },
+            "J2G4rr7KpuHNBwmj4KzB": {
+              "seedId": 52,
+              "name": "HIPAA Compatibility",
+              "domain": "Platform",
+              "status": "new",
+              "tshirt": "m",
+              "epic": [
+                "Compliance/Safety"
+              ],
+              "note": "Covers the actual personnel training and certification, the platform by definition should be up to spec",
+              "priority": "high",
+              "bucket": "mvp"
+            },
+            "Jwwuz82ExP4yssB1HW3j": {
+              "seedId": 18,
+              "name": "Voice AI Assistant",
+              "domain": "AI",
+              "priority": "med",
+              "status": "new",
+              "bucket": "mvp",
+              "epic": [
+                "Gen. Platform",
+                "Third-Party"
+              ],
+              "tshirt": "l",
+              "note": "The ability to use Voice Interactive commands and capabilities within the App."
+            },
+            "KW34JyKeP4C3KRbu3rCQ": {
+              "seedId": 42,
+              "name": "Role-Based Access Control + Audit Trail",
+              "domain": "Privacy",
+              "priority": "high",
+              "status": "part",
+              "bucket": "mvp",
+              "note": "Significant work has been done to specify RBAC and related security issues and areas of potential vulnerability. This should be under a feature area called \"Security\"",
+              "epic": [
+                "Gen. Platform",
+                "Bus. Analytics",
+                "Care Analytics",
+                "Compliance/Safety"
+              ]
+            },
+            "KcD5zerxtQJcB10xPcY9": {
+              "seedId": 52,
+              "epic": [
+                "Compliance and Safety"
+              ],
+              "note": "",
+              "priority": "med",
+              "name": "HIPAA Compatibility",
+              "bucket": "def",
+              "tshirt": "m",
+              "status": "new",
+              "domain": "Platform"
+            },
+            "L8ByUnlz9w6Zq5X4I0i5": {
+              "seedId": 55,
+              "name": "Care Analytics/Reporting",
+              "domain": "Care Coordination",
+              "priority": "med",
+              "status": "new",
+              "tshirt": "m",
+              "bucket": "mvp",
+              "note": "Foundational service in platform",
+              "epic": [
+                "Biometrics/Monitoring",
+                "Care Analytics"
+              ]
+            },
+            "LpYeTyiaX3ODAQBDk18x": {
+              "seedId": 20,
+              "name": "Proprietary Wellness Score",
+              "domain": "Wellness",
+              "priority": "low",
+              "status": "new",
+              "tshirt": "l",
+              "bucket": "v2x",
+              "note": "This will touch everything and encompass a significant number of key areas across features as it will derive the data that drives the AI-enabled intelligence and algorithms that will define the proprietary scoring model.",
+              "epic": [
+                "Care Analytics",
+                "Biometrics/Monitoring"
+              ]
+            },
+            "M82orP9wHCB9dMkziJFQ": {
+              "bucket": "mvp",
+              "domain": "AI",
+              "status": "new",
+              "name": "Voice AI Assistant",
+              "priority": "med",
+              "note": "The ability to use Voice Interactive commands and the use of the App.",
+              "epic": [
+                "General Platform"
+              ],
+              "seedId": 18
+            },
+            "N9BDzV3qfoshlIb1uq5M": {
+              "seedId": 29,
+              "name": "To-Do List & Care Tasks",
+              "domain": "Care Coordination",
+              "priority": "high",
+              "status": "part",
+              "bucket": "mvp",
+              "note": "Specified updates and enhancements based on the next set of requirements in a phased development path. Need to determine what is most important at this stage from a calendaring perspective, and what other parts of the app need to be connected to this feature.",
+              "epic": [
+                "Calendaring",
+                "Messaging",
+                "Care Mgt."
+              ]
+            },
+            "OY3G1B7Yt8w8vRrZHDlt": {
+              "seedId": 10,
+              "note": "",
+              "name": "Proof-of-Life Check-In",
+              "priority": "high",
+              "bucket": "mvp",
+              "domain": "Safety",
+              "status": "part"
+            },
+            "OwshMEPcvsOPQ6NmXVIy": {
+              "seedId": 16,
+              "domain": "AI",
+              "priority": "high",
+              "status": "new",
+              "bucket": "v2x",
+              "note": "Foundatonal service in app",
+              "epic": [
+                "Biometrics/Monitoring",
+                "Third-Party",
+                "Care Mgt.",
+                "Care Analytics",
+                "Messaging"
+              ],
+              "name": "Health Risk Identification (Virtual Risk Assessment)",
+              "tshirt": "m"
+            },
+            "PTHwUggxgOM4FL4benZv": {
+              "seedId": 30,
+              "name": "Caregiver Activity Logs (EVV)",
+              "domain": "Care Coordination",
+              "priority": "high",
+              "status": "new",
+              "tshirt": "l",
+              "bucket": "v2x",
+              "note": "Required for verifying caregiver visit, and used for payment purposes. Medicare and Medicaid requirements.\n\nTBD IF THIRD-PARTY SERVICE OR CUSTOM INTERNAL",
+              "epic": [
+                "Compliance/Safety",
+                "Third-Party",
+                "Care Mgt."
+              ]
+            },
+            "QAq27ihBcpGx5ZQRaE65": {
+              "seedId": 21,
+              "note": "Access to Trualta and other online resources",
+              "tshirt": "s",
+              "name": "Health Education Content Library",
+              "priority": "med",
+              "bucket": "mvp",
+              "domain": "Wellness",
+              "status": "new"
+            },
+            "QJHL8jVdjWaxTovUGHaH": {
+              "seedId": 32,
+              "name": "EHR / Provider Integration",
+              "domain": "Care Coordination",
+              "priority": "med",
+              "status": "new",
+              "bucket": "def",
+              "note": "Where will this come into play, likely driven by the need for a group or healthcare provider, not in the immediate future? The relationship with the provider will drive requirements, specifications, and timeline.",
+              "tshirt": "xl",
+              "epic": [
+                "Gen. Platform",
+                "Third-Party"
+              ]
+            },
+            "QTtcBkCd0tpUcbiUmmYJ": {
+              "note": "A lot of this is driven by the extent to which MIA Health has matured in terms of capabilities. This may be a large undertaking, currently indeterminate. ",
+              "epic": [
+                "Biometrics"
+              ],
+              "seedId": 15,
+              "name": "Agentic AI Core (Mia Health)",
+              "priority": "high",
+              "bucket": "mvp",
+              "domain": "AI",
+              "status": "new"
+            },
+            "QYlm4MyWLzgsTDa6Ke45": {
+              "name": "Care Team Messaging",
+              "priority": "med",
+              "status": "new",
+              "domain": "Communications",
+              "bucket": "v2x",
+              "seedId": 27,
+              "note": "In-app circle members; Part of larger alerting/messaging system"
+            },
+            "R0juvojiHPaYGn0F5YB5": {
+              "seedId": 11,
+              "name": "Fall Detection",
+              "domain": "Safety",
+              "priority": "high",
+              "status": "new",
+              "tshirt": "l",
+              "bucket": "v2x",
+              "note": "Discovery for finding methods to determine when a user has a fall. Could be the integration of other devices and systems, like Cherish. Could be through acoustics like Sense.ai, camera-based technology, or wearables that provide fall detection capabilities.\n\nRelated to ER Avoidance & Acute Event Capture.\n\nAlso, look to what makes sense in terms of \"Fall Prevention\"",
+              "epic": [
+                "Biometrics/Monitoring",
+                "Compliance/Safety",
+                "Third-Party"
+              ]
+            },
+            "RDHF9k7B2mbqeZ1ZcQDZ": {
+              "seedId": 28,
+              "name": "Shared Calendar",
+              "domain": "Care Coordination",
+              "priority": "high",
+              "status": "part",
+              "bucket": "mvp",
+              "note": "Specified updates and enhancements based on the next set of requirements in a phased development path. Need to determine what is most important at this stage from a calendaring perspective, and what other parts of the app need to be connected to this feature.",
+              "epic": [
+                "Calendaring",
+                "Messaging"
+              ]
+            },
+            "RTGQfCba7JOH0fs4NAnn": {
+              "note": "Required as part of the NYS App requirements. \n\nPart of the alert/messaging system.  Pending a better definition of requirements, it's likely we have very little place to support this right now, and it will require more in-depth scoping to determine the level of effort required to support this feature.",
+              "seedId": 46,
+              "tshirt": "l",
+              "name": "ER Avoidance & Acute Event Capture",
+              "priority": "high",
+              "bucket": "v2x",
+              "domain": "Analytics",
+              "status": "new"
+            },
+            "RfBFl1OCUQqpFKejnIzp": {
+              "tshirt": "l",
+              "seedId": 32,
+              "note": "Where will this come into play, likely driven by the need for a group or healthcare provider, not in the immediate future? The relationship with the provider will drive requirements, specifications, and timeline.",
+              "name": "EHR / Provider Integration",
+              "priority": "med",
+              "status": "new",
+              "domain": "Care Coordination",
+              "bucket": "def"
+            },
+            "T0x88hekYZeYYSAOlQL2": {
+              "bucket": "def",
+              "domain": "Wellness",
+              "status": "new",
+              "name": "Stress Detection",
+              "priority": "med",
+              "note": "Integration of MIA, Device, Caregiver observations, etc.",
+              "seedId": 22,
+              "tshirt": "l"
+            },
+            "TvOOlZN0ZWZlqbrc2v8N": {
+              "seedId": 37,
+              "name": "Senior Activity & Learning (GetSetUp)",
+              "domain": "Social",
+              "priority": "med",
+              "status": "new",
+              "bucket": "v2x",
+              "note": "This may be just simple links embedded in the UI? Needs further definition.",
+              "epic": [
+                "Education/Resources",
+                "Third-Party"
+              ],
+              "tshirt": "m"
+            },
+            "TvR33bjBHzhHIZDFbpw4": {
+              "seedId": 4,
+              "name": "Offline Mode & Low-Bandwidth Support",
+              "domain": "Platform",
+              "priority": "high",
+              "status": "part",
+              "tshirt": "l",
+              "bucket": "v2x",
+              "note": "Connectivity status indicators should be established and ensure correctly defined and implemented. Offline-first logic will require analysis, work that must be estimated; we already indicate online status, though the UI needs to be clearer. Need to have a plan and schema/approach around defining offline capabilities.\n\nMake sure to keep track of this feature and schedule it to be considered during the scoping of the MVP. It will be initiated as one of the first new features after MVP, and may be accelerated if a pilot or other programs require this functionality",
+              "epic": [
+                "Gen. Platform",
+                "End-User Mgt."
+              ]
+            },
+            "V6O5YXdivW3BRNMLt7Hl": {
+              "tshirt": "l",
+              "domain": "Analytics",
+              "status": "new",
+              "epic": [
+                "Biometrics"
+              ],
+              "note": "MIA - 1) service integration; 2) functional implementation per our spec. The ability to use this data to drive the biometric analytics ",
+              "seedId": 7,
+              "bucket": "v2x",
+              "priority": "high",
+              "name": "AI Biometric Analytics"
+            },
+            "VS5cl5zpBNgC5UvVj6P7": {
+              "name": "Connected Device Vitals",
+              "priority": "low",
+              "domain": "Vitals",
+              "status": "new",
+              "bucket": "v2x",
+              "tshirt": "l",
+              "note": "Since it's the first device integration, this effectively means developing an entirely new service/feature on the platform.  Lots of testing and learning for initial device discovery/setup. These would be vitals or biometric readings that are not derived from MIA or the device or process used for facial scanning.",
+              "seedId": 6
+            },
+            "VoiIGcpjbeTWvLPBqUXu": {
+              "domain": "Platform",
+              "status": "part",
+              "bucket": "mvp",
+              "name": "Onboarding & Setup Flow",
+              "priority": "high",
+              "seedId": 3,
+              "note": "Onboarding must be easy, accessible, streamlined, and reduce friction across the onboarding process. "
+            },
+            "VrX95tpGf8Ux7Q1rsW5x": {
+              "name": "Secure Document Vault",
+              "priority": "med",
+              "status": "part",
+              "domain": "Care Coordination",
+              "bucket": "def",
+              "seedId": 31,
+              "note": ""
+            },
+            "Vu8s3yh1JGmJeh36ix3R": {
+              "seedId": 12,
+              "name": "Emergency Telemedicine Access",
+              "domain": "Safety",
+              "priority": "high",
+              "status": "part",
+              "bucket": "mvp",
+              "note": "Connection to UCM-successor telemedicine app. Will need additional refinement, updates, or enhancements based on emerging specifications toward full definition.",
+              "epic": [
+                "Compliance/Safety",
+                "Third-Party",
+                "Care Mgt."
+              ]
+            },
+            "WSrLmS1QTCULilszKs7R": {
+              "seedId": 15,
+              "domain": "AI",
+              "priority": "high",
+              "status": "new",
+              "bucket": "mvp",
+              "epic": [
+                "Biometrics/Monitoring",
+                "Third-Party"
+              ],
+              "name": "Agentic AI Core (via Mia Health)",
+              "note": "A lot of this is driven by the extent to which MIA Health has matured in terms of capabilities. This may be a large undertaking, currently indeterminate.\n\nAsumption is MIA will serve this functionality, but we must develop it agnostically of any partner."
+            },
+            "WhHFGJfdH6EAxEDDHaF5": {
+              "domain": "Social",
+              "status": "new",
+              "bucket": "def",
+              "name": "Senior Social Connection",
+              "priority": "low",
+              "tshirt": "s",
+              "note": "Need additional definition for this feature.",
+              "seedId": 39
+            },
+            "Wz1HJjTpvy0qc6TR3Dr7": {
+              "bucket": "def",
+              "status": "new",
+              "domain": "Analytics",
+              "name": "Population Health Dashboard",
+              "priority": "high",
+              "seedId": 9,
+              "note": "The ability to track user metrics across user populations.",
+              "tshirt": "l"
+            },
+            "XaBFhXuUfuHkfoOKZFJL": {
+              "seedId": 1,
+              "epic": [
+                "General Platform"
+              ],
+              "note": "Mostly an issue for UI/UX team, tech implementation should be straightforward;  RELATED OR SAME ISSUE AS \"SENIOR MODE\".\nProper responsive design for the various viewport sizes of the individual device types and device families. WCAG/ADA should be a consideration and a complete UX/UI refresh. ",
+              "bucket": "mvp",
+              "priority": "high",
+              "name": "Multi-Device App Platform",
+              "tshirt": "l",
+              "status": "part",
+              "domain": "Platform"
+            },
+            "Xkd1f2XX7Z4PWIVsa2pW": {
+              "seedId": 24,
+              "note": "Need a detailed definition of Medication Reminders",
+              "epic": [
+                "Calendaring"
+              ],
+              "name": "Medication Reminders",
+              "priority": "high",
+              "status": "part",
+              "domain": "Medication",
+              "bucket": "mvp"
+            },
+            "YYMVwGdiSpbY0Vnc6HBG": {
+              "seedId": 23,
+              "note": "Need a detailed definition of Medication Tracking & Sharing",
+              "bucket": "mvp",
+              "domain": "Medication",
+              "status": "part",
+              "name": "Medication Tracking & Sharing",
+              "priority": "high"
+            },
+            "ZFEj6WCVt3lXIGjDlFtN": {
+              "seedId": 46,
+              "name": "ER Avoidance & Acute Event Capture",
+              "domain": "Analytics",
+              "priority": "high",
+              "status": "new",
+              "tshirt": "l",
+              "bucket": "v2x",
+              "note": "Required as part of the NYS App requirements.\n\nPart of the alert/messaging system. Pending a better definition of requirements, it's likely we have very little place to support this right now, and it will require more in-depth scoping to determine the level of effort required to support this feature.",
+              "epic": [
+                "Biometrics/Monitoring",
+                "Compliance/Safety",
+                "Messaging"
+              ]
+            },
+            "ZIbdKlHAWfckGUM59SsN": {
+              "seedId": 17,
+              "name": "Behavioral Nudge Engine",
+              "domain": "AI",
+              "priority": "high",
+              "status": "new",
+              "bucket": "v2x",
+              "epic": [
+                "Care Mgt.",
+                "Education/Resources",
+                "Biometrics/Monitoring",
+                "Messaging"
+              ],
+              "note": "This is Wellness guidance driven, which is based on AI algorithms that identify areas of concern for individuals and \"nudges\" them toward better behavior.\n\nThe engine/algorithm to manage collected data, industry guidelines, etc."
+            },
+            "ZJKtCqzHDbou3GkBL6U0": {
+              "seedId": 5,
+              "domain": "Vitals",
+              "priority": "high",
+              "status": "new",
+              "bucket": "mvp",
+              "epic": [
+                "Biometrics/Monitoring",
+                "Third-Party"
+              ],
+              "name": "Facial Scan Vitals (via Mia Health)",
+              "note": "This is the NEW implementation of the integration with the MIA Health facial scanning process that quickly collects\n\n\nAsumption is MIA will serve this functionality, but we must develop it agnostically of any partner."
+            },
+            "ZslocyzGpFSaIxlEvYJF": {
+              "seedId": 8,
+              "name": "Role-Based Vitals Reporting",
+              "domain": "Vitals",
+              "priority": "med",
+              "status": "part",
+              "bucket": "v2x",
+              "note": "This functionality refers to user roles and the permissions associated with what a user with specific access can see or do as it relates to vitals reporting.",
+              "epic": [
+                "Care Mgt.",
+                "Biometrics/Monitoring",
+                "Gen. Platform"
+              ]
+            },
+            "ajiElaroV7VY43GeLaun": {
+              "seedId": 35,
+              "name": "Caregiver Support Resources",
+              "domain": "Caregiver",
+              "priority": "med",
+              "status": "new",
+              "bucket": "v2x",
+              "note": "Trualta, etc. (service integration, sso?, without any functionality in-app)",
+              "epic": [
+                "Education/Resources",
+                "Third-Party"
+              ]
+            },
+            "b0PSGIWLR8o6yOQNYCTY": {
+              "name": "Facial Scan Vitals (Mia Health)",
+              "priority": "high",
+              "domain": "Vitals",
+              "status": "new",
+              "bucket": "mvp",
+              "seedId": 5,
+              "note": "This is the NEW implementation of the integration with the MIA Health facial scanning process that quickly collects "
+            },
+            "b87rNiBQkdjE7QDX6nOZ": {
+              "seedId": 41,
+              "name": "HIPAA Compliance Certification",
+              "domain": "Privacy",
+              "priority": "high",
+              "status": "part",
+              "bucket": "mvp",
+              "note": "Engaging in a full sweep of the App and platform to address any areas where privacy is a concern, where restricted information may be exposed, including any updates or enhancements that support this effort.",
+              "epic": [
+                "Compliance/Safety"
+              ]
+            },
+            "bJI8tjhGzlPMPOXgTjvR": {
+              "seedId": 3,
+              "name": "Onboarding & Setup Flow",
+              "domain": "Platform",
+              "priority": "high",
+              "status": "part",
+              "bucket": "mvp",
+              "note": "Onboarding must be easy, accessible, streamlined, and reduce friction across the onboarding process.",
+              "epic": [
+                "End-User Mgt.",
+                "Gen. Platform"
+              ]
+            },
+            "d7SfBvQcCEZHse8ytOJg": {
+              "seedId": 47,
+              "name": "System Health Monitoring & Error Telemetry",
+              "domain": "Analytics",
+              "priority": "high",
+              "status": "part",
+              "bucket": "mvp",
+              "note": "The ability to capture data related to App uptime, system alerting, and performance reporting. Expand to include operation data",
+              "epic": [
+                "Gen. Platform",
+                "Bus. Analytics"
+              ]
+            },
+            "dFEVWB3XXxl8qsXfTyEH": {
+              "seedId": 26,
+              "name": "Content Sharing (Photos/Docs/Videos)",
+              "domain": "Communications",
+              "priority": "med",
+              "status": "part",
+              "bucket": "mvp",
+              "epic": [
+                "End-User Content Mgt."
+              ],
+              "note": "Existing bare MVP functionality to share PDFs by uploading in Web Admin. Final size depends on final requirements.\n\nAnyone in the family caregiving circle has permission to upload and download documents.\n\nABILITY TO ADD NEW FILES TYPES, AND MANAGE BY END USERS IN THE APP"
+            },
+            "e2VL8uI5fwIdZ4GBnjy0": {
+              "seedId": 10,
+              "name": "Proof-of-Life Check-In",
+              "domain": "Safety",
+              "priority": "high",
+              "status": "part",
+              "bucket": "mvp",
+              "note": "",
+              "epic": [
+                "Biometrics/Monitoring",
+                "Calendaring",
+                "Messaging",
+                "Care Mgt."
+              ]
+            },
+            "f9bYJB034WF9MfKoH1XU": {
+              "seedId": 47,
+              "note": "The ability to capture data related to App uptime, system alerting, and performance reporting. Expand to include operation data",
+              "name": "System Health Monitoring & Error Telemetry",
+              "priority": "high",
+              "bucket": "mvp",
+              "domain": "Analytics",
+              "status": "part"
+            },
+            "g1LJlF3KnJ4vgDB2ALNV": {
+              "name": "Role-Based Access Control + Audit Trail",
+              "priority": "high",
+              "status": "part",
+              "domain": "Privacy",
+              "bucket": "mvp",
+              "seedId": 42,
+              "note": "Significant work has been done to specify RBAC and related security issues and areas of potential vulnerability. This should be under a feature area called \"Security\""
+            },
+            "gHG2SRTFFBXBJiBNujBr": {
+              "seedId": 7,
+              "name": "AI Biometric Analytics",
+              "domain": "Analytics",
+              "priority": "high",
+              "status": "new",
+              "bucket": "v2x",
+              "epic": [
+                "Biometrics/Monitoring",
+                "Gen. Platform",
+                "Care Analytics"
+              ],
+              "note": "Foundational service and capabilities for collecting and analyzing data",
+              "tshirt": "m"
+            },
+            "gK1qrOfcG0BfGbGc4vZB": {
+              "tshirt": "l",
+              "status": "part",
+              "domain": "Social",
+              "epic": [
+                "Calendaring"
+              ],
+              "note": "We have components of this functionality, including tasks and reminders. We need to break the connections related to GrandCare dependencies",
+              "seedId": 38,
+              "name": "Daily Routine & ADL Tracking",
+              "priority": "med",
+              "bucket": "v2x"
+            },
+            "gOH3hPo9LL846lEHpQV7": {
+              "seedId": 2,
+              "name": "Administrative Web Console",
+              "domain": "Platform",
+              "priority": "high",
+              "status": "part",
+              "bucket": "mvp",
+              "epic": [
+                "Gen. Platform",
+                "End-User Mgt.",
+                "Bus. Analytics",
+                "Care Analytics",
+                "End-User Content Mgt."
+              ],
+              "note": "Need to provide access for additional roles. Currently structured for high-level administration and the Life Care Coordinator level.\n\nAny/all enhancements to make the UI iteself a professional UI.  It's not about adding features, it's about making existing and new features robust and user friendly."
+            },
+            "gXbhXMQuKEWW3ZgAmv2A": {
+              "tshirt": "s",
+              "note": "This may be just simple links embedded in the UI? Needs further definition.",
+              "seedId": 37,
+              "name": "Senior Activity & Learning (GetSetUp)",
+              "priority": "med",
+              "domain": "Social",
+              "status": "new",
+              "bucket": "v2x"
+            },
+            "gj3oSh75MVkW8aZ42OMT": {
+              "seedId": 43,
+              "name": "Feature Usage Analytics Dashboard",
+              "domain": "Analytics",
+              "priority": "high",
+              "status": "new",
+              "bucket": "mvp",
+              "note": "",
+              "epic": [
+                "Bus. Analytics",
+                "Gen. Platform"
+              ]
+            },
+            "i2XqG53t1hjXsLcFuoZb": {
+              "seedId": 40,
+              "name": "Privacy-Forward Video (Consent-Only)",
+              "domain": "Privacy",
+              "priority": "high",
+              "status": "part",
+              "bucket": "mvp",
+              "note": "Hooks to be incorporated into the site, and upgrades and enhancements to support this and related features",
+              "epic": [
+                "Gen. Platform",
+                "Third-Party"
+              ]
+            },
+            "iZQPiFihawWeTEr7cdhD": {
+              "tshirt": "m",
+              "status": "new",
+              "domain": "Platform",
+              "epic": [
+                "Compliance and Safety"
+              ],
+              "note": "",
+              "seedId": 51,
+              "priority": "med",
+              "name": "SOC II Compliance",
+              "bucket": "def"
+            },
+            "jMNw3BAVirItjvu8Afb6": {
+              "bucket": "mvp",
+              "domain": "Privacy",
+              "status": "part",
+              "name": "HIPAA Compliance Certification",
+              "priority": "high",
+              "seedId": 41,
+              "note": "Engaging in a full sweep of the App and platform to address any areas where privacy is a concern, where restricted information may be exposed, including any updates or enhancements that support this effort.",
+              "epic": [
+                "Compliance and Safety"
+              ]
+            },
+            "jVix9CJzNDnLRRHlUuqN": {
+              "domain": "Safety",
+              "status": "part",
+              "bucket": "def",
+              "priority": "med",
+              "name": "Environmental Sensors Integration",
+              "seedId": 13,
+              "note": "These are sensor-type devices that will detect things like carbon monoxide and other environmental concerns"
+            },
+            "kM5x1cy8gDugM5Rozb0N": {
+              "seedId": 54,
+              "name": "Mia Health Base Integration",
+              "domain": "Platform",
+              "priority": "med",
+              "status": "new",
+              "tshirt": "m",
+              "bucket": "mvp",
+              "note": "This card covers the foundation integration with MIA as a third party sevice.  Any actual use of the platform's features, oether than \"Hello World\" implementation, are covered by other cards",
+              "epic": [
+                "Biometrics/Monitoring",
+                "Third-Party",
+                "Gen. Platform"
+              ]
+            },
+            "lSoCobjFTlUivkdpvyQd": {
+              "note": "Part of a larger program and related data collection, analytics process",
+              "epic": [
+                "Business Analytics"
+              ],
+              "seedId": 45,
+              "name": "Clinical Trial Cohort Management",
+              "priority": "high",
+              "domain": "Analytics",
+              "status": "new",
+              "bucket": "mvp"
+            },
+            "leORkvfOHXIToWL3TkFG": {
+              "seedId": 48,
+              "name": "A/B Testing Infrastructure",
+              "domain": "Analytics",
+              "priority": "med",
+              "status": "new",
+              "bucket": "def",
+              "note": "Systematic approach to testing the various features, needs to apply resources to an effort like this.",
+              "tshirt": "l",
+              "epic": [
+                "Bus. Analytics",
+                "Gen. Platform",
+                "Care Analytics"
+              ]
+            },
+            "lhqALsYxGbDOZ6RHpol4": {
+              "seedId": 57,
+              "name": "Demo Account",
+              "domain": "Platform",
+              "priority": "med",
+              "status": "new",
+              "tshirt": "m",
+              "bucket": "mvp",
+              "epic": [
+                "End-User Mgt.",
+                "Gen. Platform"
+              ],
+              "note": "Related to new users have ability to open and use app even without a subscription/care circle.  Related to new paradigm of making app easy to access."
+            },
+            "lqscGDlet69iaUcQaDMk": {
+              "name": "Research Data Export & Open API",
+              "priority": "med",
+              "bucket": "def",
+              "status": "new",
+              "domain": "Analytics",
+              "seedId": 49,
+              "note": "",
+              "epic": [
+                "General Platform"
+              ]
+            },
+            "mlZnctEYslBE4oJRUTk2": {
+              "seedId": 28,
+              "note": "Specified updates and enhancements based on the next set of requirements in a phased development path. Need to determine what is most important at this stage from a calendaring perspective, and what other parts of the app need to be connected to this feature.",
+              "epic": [
+                "Calendaring"
+              ],
+              "name": "Shared Calendar",
+              "priority": "high",
+              "domain": "Care Coordination",
+              "status": "part",
+              "bucket": "mvp"
+            },
+            "nABDat9MclIrzWIW0Q36": {
+              "seedId": 27,
+              "name": "Care Team Messaging",
+              "domain": "Communications",
+              "priority": "med",
+              "status": "new",
+              "bucket": "v2x",
+              "note": "In-app circle members; Part of larger alerting/messaging system",
+              "epic": [
+                "Messaging",
+                "Calendaring"
+              ]
+            },
+            "ndLJ54LjJOT7LMoJtZM9": {
+              "priority": "med",
+              "name": "NYSOFA Standards & Requirements",
+              "bucket": "mvp",
+              "seedId": 53,
+              "epic": [
+                "Compliance and Safety"
+              ],
+              "note": "The NYS requirements and standards related to the delivery of applications, related infrastructure, use of AI, and other features and programmatic areas.",
+              "status": "new",
+              "domain": "Platform",
+              "tshirt": "m"
+            },
+            "o4Dk3uAOzxQK0guKgzvz": {
+              "seedId": 12,
+              "note": "Connection to UCM-successor telemedicine app. Will need additional refinement, updates, or enhancements based on emerging specifications toward full definition.",
+              "epic": [
+                "Compliance and Safety"
+              ],
+              "name": "Emergency Telemedicine Access",
+              "priority": "high",
+              "bucket": "mvp",
+              "domain": "Safety",
+              "status": "part"
+            },
+            "ouQujZS3Vpb6J45Fs1qw": {
+              "seedId": 39,
+              "name": "Senior Social Connection",
+              "domain": "Social",
+              "priority": "low",
+              "status": "new",
+              "bucket": "def",
+              "note": "Need additional definition for this feature.",
+              "epic": [
+                "Education/Resources",
+                "Third-Party"
+              ],
+              "tshirt": "m"
+            },
+            "pAylO85k4YH5YevUi6Pa": {
+              "seedId": 25,
+              "name": "Video Conferencing",
+              "domain": "Communications",
+              "priority": "high",
+              "bucket": "mvp",
+              "note": "Currently only works with GrandCare's platform, and is web based instead of in-app\n\nWe must implement the foundational service as well as workflows and other user/role based concerns.",
+              "tshirt": "l",
+              "epic": [
+                "Gen. Platform",
+                "Third-Party",
+                "Care Mgt.",
+                "Biometrics/Monitoring"
+              ],
+              "status": "new"
+            },
+            "pfJyKQMypKRVwX4VMXXU": {
+              "tshirt": "l",
+              "domain": "Platform",
+              "status": "part",
+              "seedId": 4,
+              "epic": [
+                "General Platform"
+              ],
+              "note": "Connectivity status indicators should be established and ensure correctly defined and implemented. Offline-first logic will require analysis, work that must be estimated; we already indicate online status, though the UI needs to be clearer. Need to have a plan and schema/approach around defining offline capabilities. \n\nMake sure to keep track of this feature and schedule it to be considered during the scoping of the MVP. It will be initiated as one of the first new features after MVP, and may be accelerated if a pilot or other programs require this functionality  ",
+              "bucket": "v2x",
+              "priority": "high",
+              "name": "Offline Mode & Low-Bandwidth Support"
+            },
+            "r38oXO4Cok8IyjLFdGbV": {
+              "seedId": 51,
+              "name": "SOC II Compliance",
+              "domain": "Platform",
+              "status": "new",
+              "bucket": "def",
+              "epic": [
+                "Compliance/Safety"
+              ],
+              "priority": "high",
+              "note": "Not needed until required by a business partner/customer\n\nSOC II itself is an expensive certification, both initial and annual renewal.\n\nIdeally, our platform and SDLC will alway meet major SOC II requirements, but there will likely be some amount of details and personel training.",
+              "tshirt": "l"
+            },
+            "s0uhIytcHa0xtMf5LYL0": {
+              "seedId": 36,
+              "name": "Notification & Alert Management",
+              "domain": "Caregiver",
+              "priority": "high",
+              "status": "part",
+              "bucket": "mvp",
+              "note": "There is a lot of API-driven functionality to update that will support receiving data and signals from 3rd-party services like the MIA Health facial scanning or related tools and services.",
+              "epic": [
+                "Messaging",
+                "Care Mgt.",
+                "Compliance/Safety",
+                "Biometrics/Monitoring",
+                "Calendaring"
+              ]
+            },
+            "sGSeIBMUdLfem5eaW1Hf": {
+              "seedId": 24,
+              "name": "Medication Reminders",
+              "domain": "Medication",
+              "priority": "high",
+              "status": "part",
+              "bucket": "mvp",
+              "note": "Need a detailed definition of Medication Reminders",
+              "epic": [
+                "Calendaring",
+                "Messaging",
+                "Care Mgt."
+              ]
+            },
+            "tWTlRTAo6LLC204phZAd": {
+              "seedId": 36,
+              "note": "There is a lot of API-driven functionality to update that will support receiving data and signals from 3rd-party services like the MIA Health facial scanning or related tools and services.",
+              "priority": "high",
+              "name": "Notification & Alert Management",
+              "domain": "Caregiver",
+              "status": "part",
+              "bucket": "mvp"
+            },
+            "vifdKdvL1UOvni5McC74": {
+              "seedId": 9,
+              "domain": "Analytics",
+              "priority": "high",
+              "status": "new",
+              "bucket": "def",
+              "name": "Population (CR) Health Dashboard",
+              "epic": [
+                "Care Analytics",
+                "Biometrics/Monitoring"
+              ],
+              "note": "The engine/algorithm ability to track groups of users metrics across user populations.  Overlaps with other data-collection cards.",
+              "tshirt": "m"
+            },
+            "x07ZwFIIMMwuadtDzM0r": {
+              "seedId": 22,
+              "name": "Stress Detection",
+              "domain": "Wellness",
+              "priority": "med",
+              "status": "new",
+              "bucket": "def",
+              "epic": [
+                "Biometrics/Monitoring"
+              ],
+              "tshirt": "m",
+              "note": "Engine/Algorithm on top of other cards about data collection"
+            },
+            "y77RPzziDYmYzYxTcgmm": {
+              "bucket": "v2x",
+              "domain": "Safety",
+              "status": "new",
+              "name": "Fall Detection",
+              "priority": "high",
+              "seedId": 11,
+              "note": "Discovery for finding methods to determine when a user has a fall. Could be the integration of other devices and systems, like Cherish. Could be through acoustics like Sense.ai, camera-based technology, or wearables that provide fall detection capabilities.\n\nRelated to ER Avoidance & Acute Event Capture.\n\nAlso, look to what makes sense in terms of \"Fall Prevention\"",
+              "tshirt": "l"
+            },
+            "yg6w121YHvnexbqrFZc2": {
+              "seedId": 8,
+              "note": "This functionality refers to user roles and the permissions associated with what a user with specific access can see or do as it relates to vitals reporting.",
+              "bucket": "v2x",
+              "domain": "Vitals",
+              "status": "part",
+              "name": "Role-Based Vitals Reporting",
+              "priority": "med"
+            },
+            "yszI6yGA4zXPA5WoqvDa": {
+              "seedId": 40,
+              "note": "Hooks to be incorporated into the site, and upgrades and enhancements to support this and related features",
+              "name": "Privacy-Forward Video (Consent-Only)",
+              "priority": "high",
+              "domain": "Privacy",
+              "status": "part",
+              "bucket": "mvp"
+            },
+            "yvRQdgAuLo6pHwCPG8g0": {
+              "seedId": 25,
+              "note": "Only works with GrandCare's platform, and is web based instead of in-app",
+              "name": "Video Conferencing",
+              "priority": "high",
+              "status": "part",
+              "domain": "Communications",
+              "bucket": "mvp"
+            }
+          },
+          "items": {
+            "1RYHwmcNF9tEljuhWTAc": {
+              "type": "constraint",
+              "text": "Regional issues, rural location, broadband access due to the availability in an area"
+            },
+            "2FkycwMUggVnadR3gJUL": {
+              "type": "nonNegotiable",
+              "text": "Solid client/caregiver onboarding flow with minimal support needed including subscription and billing (NEW?)"
+            },
+            "48wfO8HXvasvXs9JZucY": {
+              "type": "constraint",
+              "text": "Design platform on our requirements, then fit-in vendors like MIA (lesson-learned from VLx requirements defined in part by key integration partners)"
+            },
+            "5KZ6T0zW9GcCduOPGajj": {
+              "type": "action",
+              "text": "Confirm final success metrics and owners before go-live."
+            },
+            "BZSNbTkenKbYE09qDbVT": {
+              "type": "nonNegotiable",
+              "text": "Analytics - Security, Logging, History, Compliance"
+            },
+            "CSYk4qItShifuvg7J5vG": {
+              "type": "nonNegotiable",
+              "text": "Data and analytics: Al to capture key data required by NYS and Vivalynx to provide insight and understanding"
+            },
+            "CiFpisZEV2Tw5ye0mbb7": {
+              "type": "nonNegotiable",
+              "text": "Vitals and biometrics gathering (such as MIA)"
+            },
+            "D6ZfvqWogyuWfqlw30ij": {
+              "type": "constraint",
+              "text": "Regional issues, rural location, broadband access due to the availability in an area"
+            },
+            "DZX94dxghNaKhpwgpHTX": {
+              "type": "risk",
+              "text": "Data quality and missing inputs could reduce confidence in MVP analytics."
+            },
+            "DoGa4FPMiY4FuEfT7afy": {
+              "type": "nonNegotiable",
+              "text": "Simple onboarding for low-tech users and caregivers."
+            },
+            "Ehqqq9EQHcaQqoUiSC7W": {
+              "type": "nonNegotiable",
+              "text": "A free-standing sellable product not designed just for trial but designed for sale"
+            },
+            "FvFkbXxLo5Aca7CNJrgm": {
+              "type": "nonNegotiable",
+              "text": "Mia Health AI integrated or similar in plan"
+            },
+            "GiSSsLvUrsEcMVabH95h": {
+              "type": "nonNegotiable",
+              "text": "E-Commerce for in-app subscriptions"
+            },
+            "I71mvhZhH4tqJ4SIPkyS": {
+              "type": "nonNegotiable",
+              "text": "Analytics - Security, Logging, History, Compliance"
+            },
+            "L7qxPYueGdDxbt80tvzt": {
+              "type": "nonNegotiable",
+              "text": "Data and analytics: Al to capture key data required by NYS and Vivalynx to provide insight and understanding"
+            },
+            "LJsPnTIUDW8u8oZMNeVn": {
+              "type": "constraint",
+              "text": "Initial rollout should prioritize lowest operational overhead."
+            },
+            "MDyBVfDEoBLOcqYJr18H": {
+              "type": "constraint",
+              "text": "Initial rollout should prioritize lowest operational overhead."
+            },
+            "PTpm1PNn8VhGYsJ3rgGv": {
+              "type": "nonNegotiable",
+              "text": "A free-standing sellable product not designed just for trial but designed for sale"
+            },
+            "Pbz9nh01WiPE7RIlpZ5W": {
+              "type": "question",
+              "text": "Which integrations are required for day-one reporting?"
+            },
+            "RT0eycfyCa8qbBT5Crcg": {
+              "type": "action",
+              "text": "Confirm final success metrics and owners before go-live."
+            },
+            "TCCgGgsgO47gnxtU8V7C": {
+              "type": "constraint",
+              "text": "Focus on VivaLynx's differentators in the marketplace"
+            },
+            "TOkYZVtz58VEwy7A8FON": {
+              "type": "nonNegotiable",
+              "text": "E-Commerce for in-app subscriptions"
+            },
+            "UlN0tt1v0oyb56LHlTqm": {
+              "type": "constraint",
+              "text": "Focus on VivaLynx's differentators in the marketplace"
+            },
+            "VkGKrllkrqGzK0wa81wB": {
+              "type": "constraint",
+              "text": "Design platform on our requirements, then fit-in vendors like MIA (lesson-learned from VLx requirements defined in part by key integration partners)"
+            },
+            "W3zDIXRJkLEJZIo5ZpXg": {
+              "type": "nonNegotiable",
+              "text": "Analytics - Operational Data (use of features, user paths, utiization data, etc.)"
+            },
+            "YibEOch9ziETVTPZu35x": {
+              "type": "nonNegotiable",
+              "text": "Simple onboarding for low-tech users and caregivers."
+            },
+            "ZpoqyjtwM40NM1G46wlo": {
+              "type": "question",
+              "text": "Which integrations are required for day-one reporting?"
+            },
+            "b9vfRo7TIxiYuY3wJXYH": {
+              "type": "nonNegotiable",
+              "text": "Native App on App Store/Google Play Store in Plan"
+            },
+            "bm9kRvhYSAsDgOsM0DGc": {
+              "type": "nonNegotiable",
+              "text": "Analytics - Operational Data (use of features, user paths, utiization data, etc.)"
+            },
+            "c8d6ZVpbVjLvWdcmb5Ns": {
+              "type": "nonNegotiable",
+              "text": "Mia Health AI integrated or similar in plan"
+            },
+            "falh89YgRHhS6VNbHGYk": {
+              "type": "constraint",
+              "text": "Compliance"
+            },
+            "hboNunPHcv8x0sFnHxgC": {
+              "type": "constraint",
+              "text": "MVP scope and timeline must fit implementation windows."
+            },
+            "lMrhdqAuuweoj75VuilK": {
+              "type": "nonNegotiable",
+              "text": "Analytics - Health/Medical Outcomes, other health/medical data"
+            },
+            "osy8rvOHZr57fSdfMn2M": {
+              "type": "question",
+              "text": "Which outcomes are mandatory for MVP success sign-off?"
+            },
+            "q2Lkp0LwXTdeDqT2N6HQ": {
+              "type": "nonNegotiable",
+              "text": "Ability to demo as we develop"
+            },
+            "qbJB5eXUDKY0GAP6TNAA": {
+              "type": "nonNegotiable",
+              "text": "Ability to demo as we develop"
+            },
+            "qcaWehjnfl9ViELYh0GU": {
+              "type": "constraint",
+              "text": "Compliance"
+            },
+            "qmufh49DdkqC4LAjhoSo": {
+              "type": "nonNegotiable",
+              "text": "Analytics - Health/Medical Outcomes, other health/medical data"
+            },
+            "rnx9tJX0l7erZAfbXN8Z": {
+              "type": "question",
+              "text": "Which outcomes are mandatory for MVP success sign-off?"
+            },
+            "swZtO4oV4FbYmBgrwno2": {
+              "type": "constraint",
+              "text": "MVP scope and timeline must fit implementation windows."
+            },
+            "tQMaesTyyiooZPPiiX60": {
+              "type": "risk",
+              "text": "Data quality and missing inputs could reduce confidence in MVP analytics."
+            },
+            "tiTjmrTyl8dW1px9OIij": {
+              "type": "nonNegotiable",
+              "text": "Vitals and biometrics gathering (such as MIA)"
+            },
+            "wQAv9tNAq1n0zd0dXf5j": {
+              "type": "nonNegotiable",
+              "text": "Native App on App Store/Google Play Store in Plan"
+            },
+            "xIlWj9lwTcWWeYlS8QLp": {
+              "type": "nonNegotiable",
+              "text": "Solid client/caregiver onboarding flow with minimal support needed including subscription and billing (NEW?)"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -9,6 +9,9 @@ Operational tooling for backup, seed, reset, setup, and deploy.
 - Local commands use `.env.local`.
 - Dev cloud commands use `.env.development`.
 - Prod cloud commands use `.env.production`.
+- Default backup path is `ops/data-backup` (override with `FIREBASE_BACKUP_DIR`).
+- Default seed snapshot path is `ops/data-snapshots/task-snapshot.json` (override with `SEED_DUMP_PATH`).
+- Path env vars can be relative (`../facilitation-app`, `data-snapshots/task-snapshot.json`) and are resolved from `ops/`.
 
 ## Setup
 

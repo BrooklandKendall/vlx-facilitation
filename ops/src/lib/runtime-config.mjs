@@ -5,6 +5,12 @@ import { fileURLToPath } from "node:url";
 
 const libDir = path.dirname(fileURLToPath(import.meta.url));
 export const opsRoot = path.resolve(libDir, "../..");
+export const defaultBackupDir = path.join(opsRoot, "data-backup");
+export const defaultSeedDumpPath = path.join(
+  opsRoot,
+  "data-snapshots",
+  "task-snapshot.json"
+);
 
 function requireNonEmptyEnv(name) {
   const value = process.env[name]?.trim();
@@ -33,7 +39,15 @@ function resolveOptionalPath(value) {
   if (!value?.trim()) {
     return null;
   }
-  return path.resolve(value);
+  const normalized = value.trim();
+  if (path.isAbsolute(normalized)) {
+    return normalized;
+  }
+  return path.resolve(opsRoot, normalized);
+}
+
+function requirePathEnv(name) {
+  return resolveOptionalPath(requireNonEmptyEnv(name));
 }
 
 async function ensurePathExists(targetPath, label) {
@@ -57,7 +71,7 @@ export function createFirestoreAdminContext({ requireSeedFile = false } = {}) {
   const projectId = requireNonEmptyEnv("FIREBASE_PROJECT_ID");
   const backupDir =
     resolveOptionalPath(process.env.FIREBASE_BACKUP_DIR) ??
-    path.join(opsRoot, "backups");
+    defaultBackupDir;
 
   const context = {
     target,
@@ -69,7 +83,8 @@ export function createFirestoreAdminContext({ requireSeedFile = false } = {}) {
   };
 
   if (requireSeedFile) {
-    context.seedFilePath = path.resolve(requireNonEmptyEnv("SEED_DUMP_PATH"));
+    context.seedFilePath =
+      resolveOptionalPath(process.env.SEED_DUMP_PATH) ?? defaultSeedDumpPath;
   }
 
   if (target === "emulator") {
@@ -137,11 +152,11 @@ export function assertResetConfirmation(projectId) {
 }
 
 export function getFirebaseConfigPath() {
-  return path.resolve(requireNonEmptyEnv("FIREBASE_CONFIG_PATH"));
+  return requirePathEnv("FIREBASE_CONFIG_PATH");
 }
 
 export function getAppRootDir() {
-  return path.resolve(requireNonEmptyEnv("APP_ROOT_DIR"));
+  return requirePathEnv("APP_ROOT_DIR");
 }
 
 export async function assertAppDeployInputs() {
