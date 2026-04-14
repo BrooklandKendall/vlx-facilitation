@@ -55,7 +55,7 @@ const coerceStatus = (value: unknown): FeatureStatus => {
 
 const coerceTshirt = (value: unknown): FeatureTshirt => {
   if (value === "xs" || value === "s" || value === "m" || value === "l" || value === "xl") return value;
-  return "m";
+  return "";
 };
 
 const coerceBucket = (value: unknown): FeatureBucket => {

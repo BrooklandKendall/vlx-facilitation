@@ -290,6 +290,7 @@ export function FeatureBoard({
                           })
                         }
                       >
+                        <option value=""></option>
                         {TSHIRT_SIZES.map((size) => (
                           <option key={size} value={size}>
                             {size.toUpperCase()}

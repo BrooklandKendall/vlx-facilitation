@@ -1,7 +1,7 @@
 export type FeatureBucket = "mvp" | "v2x" | "def";
 export type FeaturePriority = "high" | "med" | "low";
 export type FeatureStatus = "full" | "part" | "new";
-export type FeatureTshirt = "xs" | "s" | "m" | "l" | "xl";
+export type FeatureTshirt = "" | "xs" | "s" | "m" | "l" | "xl";
 
 export type SessionField =
   | "successCriteria";

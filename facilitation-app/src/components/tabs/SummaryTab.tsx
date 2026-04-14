@@ -5,7 +5,6 @@ interface SummaryTabProps {
   onExport: () => void;
   onExportPrdJson: () => void;
   onExportDbJson: () => void;
-  onExportDbFirestore: () => void;
 }
 
 export function SummaryTab({
@@ -15,7 +14,6 @@ export function SummaryTab({
   onExport,
   onExportPrdJson,
   onExportDbJson,
-  onExportDbFirestore,
 }: SummaryTabProps) {
   return (
     <div>
@@ -34,9 +32,6 @@ export function SummaryTab({
         </button>
         <button className="btn" type="button" onClick={onExportDbJson}>
           Export DB JSON
-        </button>
-        <button className="btn" type="button" onClick={onExportDbFirestore}>
-          Export Firestore format
         </button>
       </div>
       <div className="summary-box">{summaryText}</div>

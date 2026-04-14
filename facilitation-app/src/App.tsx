@@ -323,7 +323,7 @@ function App() {
               domain,
               priority: "med",
               status: "new",
-              tshirt: "m",
+              tshirt: "",
               bucket,
               note: "",
               epic: [],
@@ -390,44 +390,6 @@ function App() {
             } catch (caught) {
               const message = caught instanceof Error ? caught.message : "Unknown export error";
               setError(`Database export failed: ${message}`);
-            }
-          }}
-          onExportDbFirestore={async () => {
-            try {
-              const sessions = await fetchSessionsDump();
-              const collectionMap: Record<string, Record<string, Record<string, unknown>>> = {
-                sessions: {},
-              };
-
-              for (const session of sessions) {
-                const featuresMap: Record<string, Record<string, unknown>> = {};
-                const itemsMap: Record<string, Record<string, unknown>> = {};
-                for (const feature of session.features) {
-                  const { id, ...data } = feature;
-                  featuresMap[id] = data;
-                }
-                for (const item of session.items) {
-                  const { id, ...data } = item;
-                  itemsMap[id] = data;
-                }
-
-                collectionMap.sessions[session.id] = {
-                  ...session.data,
-                  __collections__: {
-                    features: featuresMap,
-                    items: itemsMap,
-                  },
-                };
-              }
-
-              downloadTextFile(
-                "firestore-export-nested.json",
-                `${JSON.stringify(collectionMap, null, 2)}\n`,
-                "application/json;charset=utf-8"
-              );
-            } catch (caught) {
-              const message = caught instanceof Error ? caught.message : "Unknown export error";
-              setError(`Firestore-format export failed: ${message}`);
             }
           }}
         />
