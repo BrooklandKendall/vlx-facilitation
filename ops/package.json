@@ -1,0 +1,30 @@
+{
+  "name": "vlx-ops",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "backup:local": "node ./config/run-ops.mjs backup local",
+    "backup:dev": "node ./config/run-ops.mjs backup development",
+    "backup:prod": "node ./config/run-ops.mjs backup production",
+    "seed:local": "node ./config/run-ops.mjs seed local",
+    "seed:dev": "node ./config/run-ops.mjs seed development",
+    "seed:prod": "node ./config/run-ops.mjs seed production",
+    "reset:local": "node ./config/run-ops.mjs reset local",
+    "reset:dev": "node ./config/run-ops.mjs reset development",
+    "reset:prod": "node ./config/run-ops.mjs reset production",
+    "deploy:dev": "node ./config/run-ops.mjs deploy development",
+    "deploy:prod": "node ./config/run-ops.mjs deploy production",
+    "setup:dev": "node ./config/run-ops.mjs setup development",
+    "setup:prod": "node ./config/run-ops.mjs setup production",
+    "backup": "node ./src/backup-firestore.mjs",
+    "seed": "node ./src/seed-data.mjs",
+    "reset": "node ./src/reset-firestore.mjs",
+    "deploy": "node ./src/deploy-app.mjs",
+    "setup": "node ./src/setup-project.mjs"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "firebase-admin": "^13.7.0"
+  }
+}
